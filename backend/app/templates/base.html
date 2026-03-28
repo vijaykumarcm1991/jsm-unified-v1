@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jira Reporting</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+    
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="flex">
+
+        <!-- Sidebar -->
+        <div class="w-64 h-screen bg-white shadow-sm p-6">
+            <h2 class="text-xl font-semibold mb-6">Reports</h2>
+
+            <ul class="space-y-3">
+                <li>
+                    <a href="/" class="block hover:text-black font-medium">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/create" class="block hover:text-black">
+                        Create Report
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+    <!-- ✅ Scripts go here -->
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

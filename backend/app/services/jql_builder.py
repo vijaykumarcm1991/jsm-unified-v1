@@ -5,14 +5,34 @@ def build_jql(project=None, issue_type=None, status=None,
 
     conditions = []
 
-    if project:
-        conditions.append(f'project = "{project}"')
+    def build_condition(field, value, is_string=True):
+        if not value:
+            return None
 
-    if issue_type:
-        conditions.append(f'issuetype = "{issue_type}"')
+        # If value is list → use IN
+        if isinstance(value, list):
+            if len(value) == 1:
+                v = value[0]
+                return f'{field} = "{v}"' if is_string else f"{field} = {v}"
 
-    if status:
-        conditions.append(f'status = "{status}"')
+            values = ",".join([f'"{v}"' if is_string else str(v) for v in value])
+            return f"{field} IN ({values})"
+
+        # Single value
+        return f'{field} = "{value}"' if is_string else f"{field} = {value}"
+
+    # ✅ Multi-select support
+    project_condition = build_condition("project", project, is_string=False)
+    if project_condition:
+        conditions.append(project_condition)
+
+    issue_condition = build_condition("issuetype", issue_type)
+    if issue_condition:
+        conditions.append(issue_condition)
+
+    status_condition = build_condition("status", status)
+    if status_condition:
+        conditions.append(status_condition)
 
     # ✅ Date filters
     if range_days:

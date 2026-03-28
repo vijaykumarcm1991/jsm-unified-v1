@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="text-2xl font-semibold mb-6">Create Report</h1>
+
+<div class="bg-white p-6 rounded-xl shadow-sm max-w-2xl space-y-4">
+
+    <div>
+        <label class="text-sm font-medium">Report Name</label>
+        <input id="name" type="text" class="w-full border p-2 rounded mt-1" />
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Source</label>
+        <select id="source" class="w-full border p-2 rounded mt-1">
+            <option value="JIRA">JIRA</option>
+            <option value="JSM">JSM</option>
+        </select>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Project</label>
+        <select id="project"></select>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Issue Type</label>
+        <select id="issuetype"></select>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Status</label>
+        <select id="status"></select>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Fields</label>
+        <select id="fields" multiple></select>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Date Range</label>
+        <div class="flex gap-2 mt-1">
+            <input id="start_date" type="date" class="w-full border p-2 rounded" />
+            <input id="end_date" type="date" class="w-full border p-2 rounded" />
+        </div>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Last N Days</label>
+        <input id="range_days" type="number" class="w-full border p-2 rounded mt-1" />
+    </div>
+
+    <button onclick="createReport()"
+        class="bg-black text-white px-4 py-2 rounded w-full hover:opacity-80">
+        Create Report
+    </button>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% raw %}
+<script>
+
+let selectedFields = [];
+
+let projectTS, issueTypeTS, statusTS, fieldsTS;
+
+// INIT
+function initDropdowns() {
+    projectTS = new TomSelect("#project", {
+        plugins: ['remove_button'],
+        maxItems: null
+    });
+
+    issueTypeTS = new TomSelect("#issuetype", {
+        plugins: ['remove_button'],
+        maxItems: null
+    });
+
+    statusTS = new TomSelect("#status", {
+        plugins: ['remove_button'],
+        maxItems: null
+    });
+
+    fieldsTS = new TomSelect("#fields", {
+        plugins: ['remove_button'],
+        persist: false,
+        create: false,
+        maxItems: null,
+        onChange: function(values) {
+            selectedFields = values;
+        }
+    });
+
+    // ✅ CRITICAL FIX
+    projectTS.on("change", function() {
+        loadIssueTypes();
+        loadStatuses();
+    });
+}
+
+// LOAD PROJECTS
+async function loadProjects() {
+    const source = document.getElementById("source").value;
+
+    const res = await fetch(`/reports/metadata/projects?source_type=${source}`);
+    const data = await res.json();
+
+    projectTS.clear();
+    projectTS.clearOptions();
+
+    data.forEach(p => {
+        projectTS.addOption({ value: p.key, text: p.name });
+    });
+
+    projectTS.refreshOptions(false);
+
+    // ✅ AUTO SELECT FIRST PROJECT
+    if (data.length > 0) {
+        projectTS.setValue(data[0].key, true);
+    }
+}
+
+// ISSUE TYPES
+async function loadIssueTypes() {
+    const source = document.getElementById("source").value;
+    const projectList = projectTS.getValue();
+    const project = Array.isArray(projectList) ? projectList[0] : projectList;
+
+    if (!project) return;
+
+    const res = await fetch(`/reports/metadata/issuetypes?source_type=${source}&project=${project}`);
+    const data = await res.json();
+
+    issueTypeTS.clear();
+    issueTypeTS.clearOptions();
+
+    data.forEach(i => {
+        issueTypeTS.addOption({ value: i, text: i });
+    });
+
+    issueTypeTS.refreshOptions(false);
+
+    if (data.length > 0) {
+        issueTypeTS.setValue(data[0], true);
+    }
+}
+
+// STATUS
+async function loadStatuses() {
+    const source = document.getElementById("source").value;
+    const projectList = projectTS.getValue();
+    const project = Array.isArray(projectList) ? projectList[0] : projectList;
+
+    if (!project) return;
+
+    const res = await fetch(`/reports/metadata/statuses?source_type=${source}&project=${project}`);
+    const data = await res.json();
+
+    statusTS.clear();
+    statusTS.clearOptions();
+
+    data.forEach(s => {
+        statusTS.addOption({ value: s, text: s });
+    });
+
+    statusTS.refreshOptions(false);
+
+    if (data.length > 0) {
+        statusTS.setValue(data[0], true);
+    }
+}
+
+// FIELDS
+async function loadFields() {
+    const source = document.getElementById("source").value;
+
+    const res = await fetch(`/reports/metadata/fields?source_type=${source}`);
+    const data = await res.json();
+
+    fieldsTS.clear();
+    fieldsTS.clearOptions();
+
+    data.forEach(f => {
+        fieldsTS.addOption({ value: f.id, text: f.name });
+    });
+
+    fieldsTS.refreshOptions(false);
+}
+
+// CREATE
+async function createReport() {
+
+    const payload = {
+        name: document.getElementById("name").value,
+        source_type: document.getElementById("source").value,
+        project: projectTS.getValue(),
+        issue_type: issueTypeTS.getValue(),
+        status: statusTS.getValue(),
+        fields: selectedFields,
+        start_date: document.getElementById("start_date").value || null,
+        end_date: document.getElementById("end_date").value || null,
+        range_days: document.getElementById("range_days").value || null
+    };
+
+    const res = await fetch("/reports/", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    });
+
+    alert("Report created!");
+    window.location.href = "/";
+}
+
+// EVENTS
+document.getElementById("source").addEventListener("change", () => {
+    loadProjects();
+    loadFields();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    initDropdowns();
+    loadProjects();
+    loadFields();
+});
+
+</script>
+{% endraw %}
+{% endblock %}

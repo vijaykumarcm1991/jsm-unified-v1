@@ -14,8 +14,17 @@ from utils.logger import logger
 IST = pytz.timezone("Asia/Kolkata")
 scheduler = BackgroundScheduler(timezone=IST)
 
+running_jobs = {}
+
 def run_scheduled_report(report_id: int):
     db = SessionLocal()
+
+    # ✅ NEW: Prevent duplicate execution
+    if report_id in running_jobs:
+        logger.warning(f"[REPORT {report_id}] ⚠️ Already running, skipping")
+        return
+
+    running_jobs[report_id] = True
 
     try:
         logger.info(f"[REPORT {report_id}] 🚀 Starting execution")
@@ -83,6 +92,8 @@ def run_scheduled_report(report_id: int):
         logger.error(f"[REPORT {report_id}] ❌ Failed: {str(e)}")
 
     finally:
+        logger.info(f"[REPORT {report_id}] 🧹 Cleaning up job state")
+        running_jobs.pop(report_id, None)
         db.close()
 
 def load_schedules():
@@ -98,7 +109,7 @@ def load_schedules():
 
             hour, minute = map(int, s.time.split(":"))
 
-            print(f"Loading schedule for report {s.report_id}")
+            logger.info(f"Loading schedule for report {s.report_id}")
 
             if s.frequency == "DAILY":
                 scheduler.add_job(
@@ -140,6 +151,7 @@ def load_schedules():
 
     finally:
         db.close()
+
 
 def start_scheduler():
     scheduler.start()

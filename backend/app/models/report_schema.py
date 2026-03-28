@@ -1,13 +1,13 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 from datetime import datetime
 
 class ReportCreate(BaseModel):
     name: str
     source_type: str   # JIRA / JSM
-    project: Optional[str] = None
-    issue_type: Optional[str] = None
-    status: Optional[str] = None
+    project: Optional[Union[str, List[str]]] = None
+    issue_type: Optional[Union[str, List[str]]] = None
+    status: Optional[Union[str, List[str]]] = None
     fields: List[str]
     jql: Optional[str] = None
     start_date: Optional[str] = None

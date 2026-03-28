@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
+
+<div class="bg-white rounded-xl shadow-sm p-6">
+
+    <table class="w-full text-left">
+        <thead>
+            <tr class="border-b">
+                <th class="py-2">Name</th>
+                <th>Source</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="reportTable">
+            <!-- Data will load here -->
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% raw %}
+<script>
+async function loadReports() {
+    try {
+        const res = await fetch("/reports/");
+        const data = await res.json();
+
+        console.log("Reports:", data);
+
+        const table = document.getElementById("reportTable");
+
+        if (!table) {
+            console.error("reportTable not found");
+            return;
+        }
+
+        let html = "";
+
+        data.forEach(r => {
+            html += `
+            <tr class="border-b">
+                <td class="py-2">${r.name}</td>
+                <td>${r.source_type}</td>
+                <td>
+                    <button onclick="runReport(${r.id})"
+                        class="bg-black text-white px-3 py-1 rounded hover:opacity-80">
+                        Run
+                    </button>
+
+                    <button onclick="cancelReport(${r.id})"
+                        class="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:opacity-80">
+                        Cancel
+                    </button>
+                </td>
+            </tr>`;
+        });
+
+        table.innerHTML = html;
+
+    } catch (err) {
+        console.error("Error loading reports:", err);
+    }
+}
+
+async function runReport(id) {
+    await fetch(`/reports/${id}/run`);
+    alert("Report executed");
+}
+
+async function cancelReport(id) {
+    const res = await fetch(`/reports/${id}/cancel`, {
+        method: "POST"
+    });
+
+    const data = await res.json();
+    alert(data.message);
+}
+
+document.addEventListener("DOMContentLoaded", loadReports);
+</script>
+{% endraw %}
+{% endblock %}
