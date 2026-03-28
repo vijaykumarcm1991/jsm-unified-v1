@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: jsm_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app
+      - ./reports:/reports
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    environment:
+      - TZ=Asia/Kolkata
+
+  postgres:
+    image: postgres:15
+    container_name: jsm_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: jsm_user
+      POSTGRES_PASSWORD: jsm_pass
+      POSTGRES_DB: jsm_db
+      TZ: Asia/Kolkata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
