@@ -1,7 +1,7 @@
 import smtplib
 import os
 from email.message import EmailMessage
-
+from utils.logger import logger
 
 def send_email(to_email: str, subject: str, body: str, file_path: str):
 
@@ -23,7 +23,13 @@ def send_email(to_email: str, subject: str, body: str, file_path: str):
         filename=file_name
     )
 
-    with smtplib.SMTP(os.getenv("SMTP_HOST"), int(os.getenv("SMTP_PORT"))) as smtp:
-        smtp.starttls()
-        smtp.login(os.getenv("SMTP_USER"), os.getenv("SMTP_PASS"))
-        smtp.send_message(msg)
+    try:
+        with smtplib.SMTP(...) as smtp:
+            smtp.starttls()
+            smtp.login(...)
+            smtp.send_message(msg)
+
+        logger.info("Email sent successfully")
+
+    except Exception as e:
+        logger.error(f"Email failed: {str(e)}")

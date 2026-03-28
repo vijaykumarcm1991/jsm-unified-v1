@@ -12,6 +12,7 @@ from services.report_service import generate_excel
 from models.history_model import ReportHistory
 from models.schedule_model import ReportSchedule
 from services.scheduler_service import scheduler, run_scheduled_report
+from utils.logger import logger
 
 IST = pytz.timezone("Asia/Kolkata")
 
@@ -79,42 +80,62 @@ def delete_report(report_id: int, db: Session = Depends(get_db)):
 @router.get("/{report_id}/run")
 def run_report(report_id: int, db: Session = Depends(get_db)):
 
+    logger.info(f"[REPORT {report_id}] 🚀 Manual run started")
+
     report = db.query(Report).filter(Report.id == report_id).first()
 
     if not report:
+        logger.error(f"[REPORT {report_id}] ❌ Report not found")
         raise HTTPException(status_code=404, detail="Report not found")
 
     # Convert string → list
     fields = ast.literal_eval(report.fields)
 
-    issues = fetch_issues(
-        source_type=report.source_type,
-        jql=report.jql,
-        fields=fields
-    )
+    try:
+        logger.info(f"[REPORT {report_id}] 📡 Fetching issues")
 
-    # Generate Excel
-    file_path = generate_excel(
-        report_name=report.name,
-        issues=issues,
-        fields=fields
-    )
+        issues = fetch_issues(
+            source_type=report.source_type,
+            jql=report.jql,
+            fields=fields
+        )
 
-    # Save history
-    history = ReportHistory(
-        report_id=report.id,
-        file_path=file_path,
-        status="SUCCESS",
-        generated_at=datetime.now(IST)
-    )
+        logger.info(f"[REPORT {report_id}] 📊 Total issues fetched: {len(issues)}")
 
-    db.add(history)
-    db.commit()
+        logger.info(f"[REPORT {report_id}] 📁 Generating Excel")
 
-    return {
-        "total": len(issues),
-        "file_path": file_path
-    }
+        # Generate Excel
+        file_path = generate_excel(
+            report_name=report.name,
+            issues=issues,
+            fields=fields
+        )
+
+        logger.info(f"[REPORT {report_id}] ✅ File created: {file_path}")
+
+        # Save history
+        logger.info(f"[REPORT {report_id}] 🧾 Saving history")
+
+        history = ReportHistory(
+            report_id=report.id,
+            file_path=file_path,
+            status="SUCCESS",
+            generated_at=datetime.now(IST)
+        )
+
+        db.add(history)
+        db.commit()
+
+        logger.info(f"[REPORT {report_id}] 🎉 Manual run completed")
+
+        return {
+            "total": len(issues),
+            "file_path": file_path
+        }
+
+    except Exception as e:
+        logger.error(f"[REPORT {report_id}] ❌ Manual run failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to run report")
 
 @router.get("/{report_id}/history")
 def get_report_history(report_id: int, db: Session = Depends(get_db)):
