@@ -303,6 +303,45 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
 
     return {"message": "Schedule created"}
 
+# =========================
+# GET SCHEDULE
+# =========================
+@router.get("/{report_id}/schedule")
+def get_schedule(report_id: int, db: Session = Depends(get_db)):
+
+    schedule = db.query(ReportSchedule).filter(
+        ReportSchedule.report_id == report_id
+    ).first()
+
+    if not schedule:
+        return {}
+
+    return {
+        "frequency": schedule.frequency,
+        "time": schedule.time,
+        "day_of_week": schedule.day_of_week,
+        "day_of_month": schedule.day_of_month,
+        "email_to": schedule.email_to
+    }
+
+
+# =========================
+# DELETE SCHEDULE
+# =========================
+@router.delete("/{report_id}/schedule")
+def delete_schedule(report_id: int, db: Session = Depends(get_db)):
+
+    schedule = db.query(ReportSchedule).filter(
+        ReportSchedule.report_id == report_id
+    ).first()
+
+    if not schedule:
+        raise HTTPException(status_code=404, detail="No schedule found")
+
+    db.delete(schedule)
+    db.commit()
+
+    return {"message": "Schedule deleted"}
 
 # =========================
 # METADATA
