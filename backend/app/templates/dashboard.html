@@ -197,7 +197,7 @@ async function loadReports() {
 
 async function runReport(id) {
     await fetch(`/reports/${id}/run`);
-    alert("Report executed");
+    showToast("Report executed", "success");
 }
 
 async function cancelReport(id) {
@@ -206,7 +206,7 @@ async function cancelReport(id) {
     });
 
     const data = await res.json();
-    alert(data.message);
+    showToast(data.message, "info");
 }
 
 async function fetchStatus(id) {
@@ -325,14 +325,14 @@ async function downloadLatest(id) {
         const data = await res.json();
 
         if (!data.file_path) {
-            alert("No report available");
+            showToast("No report available", "error");
             return;
         }
 
         window.open(`/reports/download?path=${encodeURIComponent(data.file_path)}`, "_blank");
 
     } catch (e) {
-        alert("No report found");
+        showToast("No report found", "error");
     }
 }
 
@@ -408,13 +408,15 @@ async function saveSchedule() {
         email_to: document.getElementById("emailTo").value
     };
 
-    await fetch(`/reports/${id}/schedule`, {
+    const res = await fetch(`/reports/${id}/schedule`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
     });
 
-    alert("Schedule saved");
+    const data = await res.json();
+
+    showToast(data.message || "Schedule saved", "success");
     closeSchedule();
 }
 
@@ -425,7 +427,7 @@ async function deleteSchedule() {
         method: "DELETE"
     });
 
-    alert("Schedule deleted");
+    showToast("Schedule deleted", "success");
     closeSchedule();
 }
 

@@ -10,6 +10,15 @@
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     
+    <style>
+    @keyframes slide-in {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slide-in {
+        animation: slide-in 0.3s ease-out;
+    }
+    </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
@@ -53,7 +62,37 @@
     </div>
 
     <!-- ✅ Scripts go here -->
-    {% block scripts %}{% endblock %}
 
+<script>
+function showToast(message, type="info") {
+
+    const container = document.getElementById("toastContainer");
+
+    const colors = {
+        success: "bg-green-500",
+        error: "bg-red-500",
+        info: "bg-blue-500"
+    };
+
+    const toast = document.createElement("div");
+
+    toast.className = `${colors[type]} text-white px-4 py-2 rounded shadow-md flex items-center gap-2 animate-slide-in`;
+
+    toast.innerHTML = `
+        <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("opacity-0", "transition");
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+</script>
+
+<div id="toastContainer" class="fixed top-5 right-5 space-y-3 z-50"></div>
+
+{% block scripts %}{% endblock %}
 </body>
 </html>

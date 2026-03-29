@@ -275,15 +275,30 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
     frequency = payload.get("frequency")
     email_to = payload.get("email_to")
     time = payload.get("time")
+
     day_of_week = payload.get("day_of_week")
     day_of_month = payload.get("day_of_month")
 
+    # ✅ fix types
+    day_of_week = int(day_of_week) if day_of_week not in [None, ""] else None
+    day_of_month = int(day_of_month) if day_of_month not in [None, ""] else None
+
+    # ✅ delete old schedule
+    existing = db.query(ReportSchedule).filter(
+        ReportSchedule.report_id == report_id
+    ).first()
+
+    if existing:
+        db.delete(existing)
+        db.commit()
+
+    # ✅ insert clean
     schedule = ReportSchedule(
         report_id=report_id,
         frequency=frequency,
         time=time,
-        day_of_week=day_of_week,
-        day_of_month=day_of_month,
+        day_of_week=day_of_week if frequency == "WEEKLY" else None,
+        day_of_month=day_of_month if frequency == "MONTHLY" else None,
         email_to=email_to
     )
 
