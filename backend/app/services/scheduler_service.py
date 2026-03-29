@@ -77,14 +77,24 @@ def run_scheduled_report(report_id: int):
         if schedule and schedule.email_to:
             logger.info(f"[REPORT {report_id}] 📧 Sending email to {schedule.email_to}")
 
-            send_email(
-                to_email=schedule.email_to,
-                subject=f"Report: {report.name}",
-                body="Please find attached report.",
-                file_path=file_path
-            )
+            cc_list = [e.strip() for e in schedule.cc_email.split(",")] if schedule.cc_email else []
 
-            logger.info(f"[REPORT {report_id}] 📧 Email sent")
+            send_email(
+                to_emails=[e.strip() for e in schedule.email_to.split(",")],
+                subject=f"Report: {report.name}",
+                body=f"""
+                Hello,
+
+                Please find attached report: {report.name}
+
+                Generated at: {datetime.now(IST)}
+
+                Regards,
+                Jira Reporting System
+                """,
+                file_path=file_path,
+                cc_emails=cc_list
+            )
 
         logger.info(f"[REPORT {report_id}] 🎉 Completed successfully")
 

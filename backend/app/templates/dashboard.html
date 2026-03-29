@@ -88,6 +88,9 @@
 
             <input type="email" id="emailTo" placeholder="Email"
                 class="w-full border p-2 rounded mb-2">
+            
+            <input type="text" id="ccEmail" placeholder="CC (comma separated)"
+                class="w-full border p-2 rounded mb-2">
 
             <div class="flex justify-between mt-4">
                 <button onclick="closeSchedule()" class="bg-gray-400 text-white px-4 py-2 rounded">
@@ -358,7 +361,7 @@ async function openSchedule(id) {
                 <p class="text-sm text-gray-600">${data.email_to}</p>
 
                 <div class="flex gap-2 mt-2">
-                    <button onclick="editSchedule('${data.frequency}', '${data.time}', '${data.day_of_week}', '${data.day_of_month}', '${data.email_to}')"
+                    <button onclick="editSchedule('${data.frequency}', '${data.time}', '${data.day_of_week}', '${data.day_of_month}', '${data.email_to}', '${data.cc_email || ""}')"
                         class="bg-blue-500 text-white px-3 py-1 rounded text-xs">Edit</button>
 
                     <button onclick="deleteSchedule()"
@@ -395,6 +398,7 @@ async function loadSchedule(id) {
     document.getElementById("dayOfWeek").value = data.day_of_week || "";
     document.getElementById("dayOfMonth").value = data.day_of_month || "";
     document.getElementById("emailTo").value = data.email_to || "";
+    document.getElementById("ccEmail").value = data.cc_email || ""; 
 }
 
 async function saveSchedule() {
@@ -405,7 +409,8 @@ async function saveSchedule() {
         time: document.getElementById("scheduleTime").value,
         day_of_week: document.getElementById("dayOfWeek").value,
         day_of_month: document.getElementById("dayOfMonth").value,
-        email_to: document.getElementById("emailTo").value
+        email_to: document.getElementById("emailTo").value,
+        cc_email: document.getElementById("ccEmail").value 
     };
 
     const res = await fetch(`/reports/${id}/schedule`, {
@@ -450,13 +455,14 @@ function showForm() {
     document.getElementById("scheduleForm").classList.remove("hidden");
 }
 
-function editSchedule(freq, time, dow, dom, email) {
+function editSchedule(freq, time, dow, dom, email, cc_email) {
 
     showForm();
 
     document.getElementById("frequency").value = freq;
     document.getElementById("scheduleTime").value = time;
     document.getElementById("emailTo").value = email;
+    document.getElementById("ccEmail").value = cc_email;
 
     if (dow) document.getElementById("dayOfWeek").value = dow;
     if (dom) document.getElementById("dayOfMonth").value = dom;

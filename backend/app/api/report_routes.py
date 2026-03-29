@@ -108,6 +108,9 @@ def run_report_job(report_id: int, cancel_event: Event):
         db.add(history)
         db.commit()
 
+        # ✅ ADD THIS LINE HERE
+        logger.info(f"[REPORT {report_id}] 📭 Email skipped (manual run)")
+
         job_status[report_id]["status"] = "COMPLETED"
         job_status[report_id]["progress"] = 100
 
@@ -274,6 +277,7 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
 
     frequency = payload.get("frequency")
     email_to = payload.get("email_to")
+    cc_email = payload.get("cc_email")   # ✅ NEW
     time = payload.get("time")
 
     day_of_week = payload.get("day_of_week")
@@ -299,7 +303,8 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
         time=time,
         day_of_week=day_of_week if frequency == "WEEKLY" else None,
         day_of_month=day_of_month if frequency == "MONTHLY" else None,
-        email_to=email_to
+        email_to=email_to,
+        cc_email=cc_email   # ✅ NEW
     )
 
     db.add(schedule)
@@ -336,7 +341,8 @@ def get_schedule(report_id: int, db: Session = Depends(get_db)):
         "time": schedule.time,
         "day_of_week": schedule.day_of_week,
         "day_of_month": schedule.day_of_month,
-        "email_to": schedule.email_to
+        "email_to": schedule.email_to,
+        "cc_email": schedule.cc_email   # ✅ NEW
     }
 
 
