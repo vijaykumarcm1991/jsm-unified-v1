@@ -2,16 +2,15 @@
 
 {% block content %}
 
-<h1 class="text-2xl font-semibold mb-6">Dashboard</h1>
-
 <div class="bg-white rounded-xl shadow-sm p-6">
 
-    <table class="w-full text-left">
+    <table class="w-full text-left text-sm">
         <thead>
-            <tr class="border-b">
-                <th class="py-2">Name</th>
-                <th>Source</th>
-                <th>Actions</th>
+            <tr class="border-b text-gray-500 uppercase text-xs">
+                <th class="py-3">Name</th>
+                <th class="py-3">Source</th>
+                <th class="py-3">Status</th>
+                <th class="py-3">Actions</th>
             </tr>
         </thead>
 
@@ -20,6 +19,31 @@
         </tbody>
     </table>
 
+</div>
+
+<!-- ✅ ADD HERE -->
+<div id="historyModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-3/4 max-h-[80vh] overflow-y-auto">
+        <h2 class="text-xl font-semibold mb-4">Report History</h2>
+
+        <table class="w-full text-left text-sm">
+            <thead>
+                <tr class="border-b text-gray-500 uppercase text-xs">
+                    <th>Generated At</th>
+                    <th>Status</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody id="historyTable"></tbody>
+        </table>
+
+        <div class="text-right mt-4">
+            <button onclick="closeHistory()"
+                class="bg-gray-500 text-white px-4 py-2 rounded">
+                Close
+            </button>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
@@ -44,20 +68,55 @@ async function loadReports() {
         let html = "";
 
         data.forEach(r => {
+            startPolling(r.id); 
             html += `
-            <tr class="border-b">
+            <tr class="border-b h-14 hover:bg-gray-50 transition">
                 <td class="py-2">${r.name}</td>
-                <td>${r.source_type}</td>
+                <td class="py-2">${r.source_type}</td>
+                <td class="py-2">
+                    <div id="status-${r.id}" class="w-full">
+                        <div class="bg-gray-200 rounded h-3 w-full">
+                            <div id="bar-${r.id}" class="h-3 rounded bg-gray-400" style="width:0%"></div>
+                        </div>
+                        <div id="text-${r.id}" class="text-xs mt-1 text-gray-600">Idle</div>
+                    </div>
+                </td>
                 <td>
-                    <button onclick="runReport(${r.id})"
-                        class="bg-black text-white px-3 py-1 rounded hover:opacity-80">
-                        Run
-                    </button>
+                    <div class="flex gap-2 flex-wrap">
 
-                    <button onclick="cancelReport(${r.id})"
-                        class="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:opacity-80">
-                        Cancel
-                    </button>
+                        <button onclick="runReport(${r.id})"
+                            class="flex items-center gap-1 bg-black text-white px-3 py-1 rounded hover:opacity-80 hover:scale-105 transition text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"/>
+                            </svg>
+                            Run
+                        </button>
+
+                        <button onclick="cancelReport(${r.id})"
+                            class="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded hover:opacity-80 hover:scale-105 transition text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                            Cancel
+                        </button>
+
+                        <button onclick="viewHistory(${r.id})"
+                            class="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded hover:opacity-80 hover:scale-105 transition text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M12 6a6 6 0 100 12 6 6 0 000-12z"/>
+                            </svg>
+                            History
+                        </button>
+
+                        <button onclick="downloadLatest(${r.id})"
+                            class="flex items-center gap-1 bg-green-600 text-white px-3 py-1 rounded hover:opacity-80 hover:scale-105 transition text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+                            </svg>
+                            Latest
+                        </button>
+
+                    </div>
                 </td>
             </tr>`;
         });
@@ -82,6 +141,139 @@ async function cancelReport(id) {
     const data = await res.json();
     alert(data.message);
 }
+
+async function fetchStatus(id) {
+    try {
+        const res = await fetch(`/reports/${id}/status`);
+        const data = await res.json();
+
+        const bar = document.getElementById(`bar-${id}`);
+        const text = document.getElementById(`text-${id}`);
+
+        if (!bar || !text) return;
+
+        if (data.status === "RUNNING") {
+            bar.style.width = `${data.progress}%`;
+            bar.className = "h-3 rounded bg-blue-500 transition-all duration-500";
+            text.innerHTML = `Running (${data.progress}%)`;
+
+        } else if (data.status === "COMPLETED") {
+            bar.style.width = "100%";
+            bar.className = "h-3 rounded bg-green-500 transition-all duration-500";
+            text.innerHTML = "Completed";
+
+        } else if (data.status === "CANCELLED") {
+            bar.style.width = "100%";
+            bar.className = "h-3 rounded bg-red-500 transition-all duration-500";
+            text.innerHTML = "Cancelled";
+
+        } else {
+            bar.style.width = "0%";
+            bar.className = "h-3 rounded bg-gray-400";
+            text.innerHTML = "Idle";
+        }
+
+    } catch (e) {
+        console.error("Status fetch error", e);
+    }
+}
+
+const pollingMap = {};
+
+function startPolling(id) {
+    if (pollingMap[id]) return; // prevent duplicate polling
+
+    pollingMap[id] = setInterval(() => fetchStatus(id), 2000);
+}
+
+function formatDateTime(dt) {
+    const d = new Date(dt);
+
+    const date = d.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+
+    const time = d.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    });
+
+    return `${date} | ${time}`;
+}
+
+async function viewHistory(reportId) {
+
+    const res = await fetch(`/reports/${reportId}/history`);
+    const data = await res.json();
+
+    const table = document.getElementById("historyTable");
+
+    let html = "";
+
+    if (!data || data.length === 0) {
+        html = `
+        <tr>
+            <td colspan="3" class="text-center py-4 text-gray-500">
+                No history available
+            </td>
+        </tr>`;
+    } else {
+        data
+        .sort((a, b) => new Date(b.generated_at || 0) - new Date(a.generated_at || 0))
+        .forEach(h => {
+            html += `
+            <tr class="border-b h-12">
+                <td class="py-3">${formatDateTime(h.generated_at)}</td>
+                <td class="py-3">${h.status}</td>
+                <td class="py-3">
+                    ${
+                        h.status === "SUCCESS"
+                        ? `<a href="/reports/download?path=${encodeURIComponent(h.file_path)}"
+                             class="bg-green-500 text-white px-3 py-1 rounded">
+                             Download
+                           </a>`
+                        : `<span class="text-gray-400">N/A</span>`
+                    }
+                </td>
+            </tr>`;
+        });
+    }
+
+    table.innerHTML = html;
+
+    document.getElementById("historyModal").classList.remove("hidden");
+    document.getElementById("historyModal").classList.add("flex");
+}
+
+function closeHistory() {
+    document.getElementById("historyModal").classList.add("hidden");
+}
+
+async function downloadLatest(id) {
+    try {
+        const res = await fetch(`/reports/${id}/latest`);
+        const data = await res.json();
+
+        if (!data.file_path) {
+            alert("No report available");
+            return;
+        }
+
+        window.open(`/reports/download?path=${encodeURIComponent(data.file_path)}`, "_blank");
+
+    } catch (e) {
+        alert("No report found");
+    }
+}
+
+document.getElementById("historyModal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeHistory();
+    }
+});
 
 document.addEventListener("DOMContentLoaded", loadReports);
 </script>

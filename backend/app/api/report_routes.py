@@ -20,9 +20,13 @@ from services.metadata_service import (
     get_fields
 )
 from threading import Thread, Event
+from fastapi.responses import FileResponse
+import os
 
 running_jobs = {}
 cancel_flags = {}
+
+job_status = {}   # 🔥 NEW
 
 IST = pytz.timezone("Asia/Kolkata")
 
@@ -36,6 +40,13 @@ def run_report_job(report_id: int, cancel_event: Event):
     db: Session = next(get_db())
 
     try:
+        job_status[report_id] = {
+            "status": "RUNNING",
+            "progress": 0,
+            "fetched": 0,
+            "total": 0
+        }
+
         logger.info(f"[REPORT {report_id}] 🚀 Manual run started")
 
         report = db.query(Report).filter(Report.id == report_id).first()
@@ -48,11 +59,21 @@ def run_report_job(report_id: int, cancel_event: Event):
 
         logger.info(f"[REPORT {report_id}] 📡 Fetching issues")
 
+        def update_progress(current, total):
+            percent = int((current / total) * 100) if total else 0
+
+            job_status[report_id].update({
+                "fetched": current,
+                "total": total,
+                "progress": percent
+            })
+        
         issues = fetch_issues(
             source_type=report.source_type,
             jql=report.jql,
             fields=fields,
-            cancel_event=cancel_event  # 🔥 IMPORTANT
+            cancel_event=cancel_event,  # 🔥 IMPORTANT
+            progress_callback=update_progress
         )
 
         if cancel_event.is_set():
@@ -86,6 +107,9 @@ def run_report_job(report_id: int, cancel_event: Event):
 
         db.add(history)
         db.commit()
+
+        job_status[report_id]["status"] = "COMPLETED"
+        job_status[report_id]["progress"] = 100
 
         logger.info(f"[REPORT {report_id}] 🎉 Manual run completed")
 
@@ -188,6 +212,9 @@ def cancel_report(report_id: int):
     logger.info(f"[REPORT {report_id}] 🛑 Cancel requested")
 
     cancel_flags[report_id].set()
+    
+    if report_id in job_status:
+        job_status[report_id]["status"] = "CANCELLED"
 
     return {"message": "Cancellation initiated"}
 
@@ -212,6 +239,32 @@ def get_report_history(report_id: int, db: Session = Depends(get_db)):
         for h in history
     ]
 
+@router.get("/{report_id}/latest")
+def get_latest_report(report_id: int, db: Session = Depends(get_db)):
+
+    latest = db.query(ReportHistory)\
+        .filter(ReportHistory.report_id == report_id)\
+        .order_by(ReportHistory.generated_at.desc())\
+        .first()
+
+    if not latest:
+        raise HTTPException(status_code=404, detail="No report history found")
+
+    return {
+        "file_path": latest.file_path
+    }
+
+@router.get("/download")
+def download_file(path: str):
+
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(
+        path,
+        filename=os.path.basename(path),
+        media_type="application/octet-stream"
+    )
 
 # =========================
 # SCHEDULER
@@ -272,3 +325,11 @@ def statuses(source_type: str, project: str):
 @router.get("/metadata/fields")
 def fields(source_type: str):
     return get_fields(source_type)
+
+@router.get("/{report_id}/status")
+def get_status(report_id: int):
+
+    if report_id not in job_status:
+        return {"status": "IDLE"}
+
+    return job_status[report_id]

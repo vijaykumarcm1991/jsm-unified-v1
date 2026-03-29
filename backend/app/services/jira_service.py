@@ -2,7 +2,7 @@ import requests
 import os
 from utils.logger import logger
 
-def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None):
+def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None, progress_callback=None):
     """
     Fetch ALL issues from Jira/JSM using pagination
     Supports cancellation via threading.Event
@@ -79,7 +79,13 @@ def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None):
 
         all_issues.extend(issues)
 
-        logger.info(f"[{source_type.upper()}] 📦 Fetched {len(all_issues)} / {total} issues")
+        current = len(all_issues)
+
+        logger.info(f"[{source_type.upper()}] 📦 Fetched {current} / {total} issues")
+
+        # ✅ NEW
+        if progress_callback:
+            progress_callback(current, total)
 
         # 🔴 STOP CONDITION
         if len(all_issues) >= total:

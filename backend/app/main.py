@@ -6,6 +6,7 @@ from services.scheduler_service import start_scheduler, load_schedules
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 import os
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
@@ -15,6 +16,8 @@ load_schedules()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 # Create tables
 Base.metadata.create_all(bind=engine)
