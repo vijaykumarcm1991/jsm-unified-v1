@@ -159,6 +159,69 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
 
     return {"message": "Report created", "id": report.id}
 
+@router.put("/{report_id}")
+def update_report(report_id: int, payload: ReportCreate, db: Session = Depends(get_db)):
+
+    report = db.query(Report).filter(Report.id == report_id).first()
+
+    if not report:
+        raise HTTPException(status_code=404, detail="Report not found")
+
+    generated_jql = build_jql(
+        project=payload.project,
+        issue_type=payload.issue_type,
+        status=payload.status,
+        start_date=payload.start_date,
+        end_date=payload.end_date,
+        range_days=payload.range_days
+    )
+
+    jql_query = payload.jql if payload.jql else generated_jql if generated_jql else None
+
+    report.name = payload.name
+    report.source_type = payload.source_type
+    report.project = ",".join(payload.project) if isinstance(payload.project, list) else payload.project
+    report.issue_type = ",".join(payload.issue_type) if isinstance(payload.issue_type, list) else payload.issue_type
+    report.status = ",".join(payload.status) if isinstance(payload.status, list) else payload.status
+    report.fields = str(payload.fields)
+    report.jql = jql_query
+
+    db.commit()
+
+    logger.info(f"[REPORT {report_id}] ✏️ Updated")
+
+    return {"message": "Report updated"}
+
+@router.post("/{report_id}/copy")
+def copy_report(report_id: int, db: Session = Depends(get_db)):
+
+    original = db.query(Report).filter(Report.id == report_id).first()
+
+    if not original:
+        raise HTTPException(status_code=404, detail="Report not found")
+
+    # ✅ Create copy
+    new_report = Report(
+        name=f"{original.name} (Copy)",
+        source_type=original.source_type,
+        project=original.project,
+        issue_type=original.issue_type,
+        status=original.status,
+        fields=original.fields,
+        jql=original.jql,
+        created_at=datetime.now(IST)
+    )
+
+    db.add(new_report)
+    db.commit()
+    db.refresh(new_report)
+
+    logger.info(f"[REPORT {report_id}] 📄 Copied to new report {new_report.id}")
+
+    return {
+        "message": "Report copied successfully",
+        "id": new_report.id
+    }
 
 @router.get("/", response_model=list[ReportResponse])
 def get_reports(db: Session = Depends(get_db)):
@@ -373,13 +436,13 @@ def projects(source_type: str):
 
 
 @router.get("/metadata/issuetypes")
-def issuetypes(source_type: str, project: str):
-    return get_issue_types(source_type, project)
+def issuetypes(source_type: str):
+    return get_issue_types(source_type)
 
 
 @router.get("/metadata/statuses")
-def statuses(source_type: str, project: str):
-    return get_statuses(source_type, project)
+def statuses(source_type: str):
+    return get_statuses(source_type)
 
 
 @router.get("/metadata/fields")

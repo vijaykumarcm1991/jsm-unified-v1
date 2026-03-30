@@ -95,12 +95,6 @@ function initDropdowns() {
             selectedFields = values;
         }
     });
-
-    // ✅ CRITICAL FIX
-    projectTS.on("change", function() {
-        loadIssueTypes();
-        loadStatuses();
-    });
 }
 
 // LOAD PROJECTS
@@ -118,22 +112,13 @@ async function loadProjects() {
     });
 
     projectTS.refreshOptions(false);
-
-    // ✅ AUTO SELECT FIRST PROJECT
-    if (data.length > 0) {
-        projectTS.setValue(data[0].key, true);
-    }
 }
 
 // ISSUE TYPES
 async function loadIssueTypes() {
     const source = document.getElementById("source").value;
-    const projectList = projectTS.getValue();
-    const project = Array.isArray(projectList) ? projectList[0] : projectList;
 
-    if (!project) return;
-
-    const res = await fetch(`/reports/metadata/issuetypes?source_type=${source}&project=${project}`);
+    const res = await fetch(`/reports/metadata/issuetypes?source_type=${source}`);
     const data = await res.json();
 
     issueTypeTS.clear();
@@ -144,21 +129,13 @@ async function loadIssueTypes() {
     });
 
     issueTypeTS.refreshOptions(false);
-
-    if (data.length > 0) {
-        issueTypeTS.setValue(data[0], true);
-    }
 }
 
 // STATUS
 async function loadStatuses() {
     const source = document.getElementById("source").value;
-    const projectList = projectTS.getValue();
-    const project = Array.isArray(projectList) ? projectList[0] : projectList;
 
-    if (!project) return;
-
-    const res = await fetch(`/reports/metadata/statuses?source_type=${source}&project=${project}`);
+    const res = await fetch(`/reports/metadata/statuses?source_type=${source}`);
     const data = await res.json();
 
     statusTS.clear();
@@ -169,10 +146,6 @@ async function loadStatuses() {
     });
 
     statusTS.refreshOptions(false);
-
-    if (data.length > 0) {
-        statusTS.setValue(data[0], true);
-    }
 }
 
 // FIELDS
@@ -182,7 +155,6 @@ async function loadFields() {
     const res = await fetch(`/reports/metadata/fields?source_type=${source}`);
     const data = await res.json();
 
-    fieldsTS.clear();
     fieldsTS.clearOptions();
 
     data.forEach(f => {
@@ -190,10 +162,20 @@ async function loadFields() {
     });
 
     fieldsTS.refreshOptions(false);
+
+    console.log("✅ Fields loaded count:", data.length);
+    console.log("✅ Sample field:", data[0]);
+
+    // ✅ CRITICAL FIX (wait for TomSelect internal sync)
+    await new Promise(resolve => setTimeout(resolve, 100));
 }
 
 // CREATE
 async function createReport() {
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+    const id = params.get("id");
 
     const payload = {
         name: document.getElementById("name").value,
@@ -207,26 +189,179 @@ async function createReport() {
         range_days: document.getElementById("range_days").value || null
     };
 
-    const res = await fetch("/reports/", {
-        method: "POST",
+    let url = "/reports/";
+    let method = "POST";
+
+    if (mode === "edit") {
+        url = `/reports/${id}`;
+        method = "PUT";
+    }
+
+    const res = await fetch(url, {
+        method: method,
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
     });
 
-    alert("Report created!");
+    alert(mode === "edit" ? "Report updated!" : "Report created!");
+
     window.location.href = "/";
 }
 
+async function loadReportData(id) {
+
+    const res = await fetch(`/reports/`);
+    const data = await res.json();
+
+    const report = data.find(r => r.id == id);
+    if (!report) return;
+
+    // ✅ Set basic fields
+    document.getElementById("name").value = report.name;
+
+    // ✅ STEP 1 — set correct source FIRST
+
+    const sourceDropdown = document.getElementById("source");
+    sourceDropdown.value = report.source_type;
+
+    console.log("🔥 SOURCE SET:", report.source_type);
+
+    // 🔥 TRIGGER CHANGE EVENT (VERY IMPORTANT)
+    sourceDropdown.dispatchEvent(new Event("change"));
+
+    // ✅ WAIT FOR ALL DROPDOWNS TO LOAD PROPERLY
+    await loadProjects();
+    await loadIssueTypes();
+    await loadStatuses();
+    await loadFields();
+
+    // =========================
+    // ✅ STEP 4 — PROJECT FIX (FINAL)
+    // =========================
+    if (report.project) {
+
+        const savedProjects = report.project.split(",");
+        const options = projectTS.options;
+
+        const mappedValues = [];
+
+        savedProjects.forEach(p => {
+
+            let match = Object.values(options).find(opt =>
+                opt.value.toLowerCase() === p.toLowerCase()
+            );
+
+            // 🔥 fallback (name match)
+            if (!match) {
+                match = Object.values(options).find(opt =>
+                    opt.text.toLowerCase().includes(p.toLowerCase()) ||
+                    p.toLowerCase().includes(opt.text.toLowerCase())
+                );
+            }
+
+            if (match) {
+                mappedValues.push(match.value);
+            } else {
+                console.warn("❌ Project not matched:", p);
+            }
+        });
+
+        console.log("✅ Project mapping:", savedProjects, "→", mappedValues);
+
+        projectTS.setValue(mappedValues);
+    }
+
+    console.log("📦 Saved Project:", report.project);
+    console.log("📦 Available Options:", projectTS.options);
+
+    // =========================
+    // ✅ ISSUE TYPE
+    // =========================
+    if (report.issue_type) {
+        issueTypeTS.setValue(report.issue_type.split(","));
+    }
+
+    // =========================
+    // ✅ STATUS
+    // =========================
+    if (report.status) {
+        statusTS.setValue(report.status.split(","));
+    }
+
+    // =========================
+    // ✅ FIELDS FIX
+    // =========================
+    if (report.fields) {
+
+        const parsed = JSON.parse(report.fields.replace(/'/g, '"'));
+        const options = fieldsTS.options;
+        const mappedValues = [];
+
+        parsed.forEach(f => {
+            const match = Object.values(options).find(opt =>
+                opt.value.toLowerCase() === f.toLowerCase()
+            );
+            if (match) mappedValues.push(match.value);
+        });
+
+        fieldsTS.setValue(mappedValues);
+        fieldsTS.refreshItems();
+
+        // ✅ IMPORTANT — sync payload
+        selectedFields = mappedValues;
+    }
+    // =========================
+    // ✅ DATE PARSE FROM JQL
+    // =========================
+    if (report.jql) {
+
+        // relative range
+        const rangeMatch = report.jql.match(/created\s*>=\s*(-\d+d)/i);
+        if (rangeMatch) {
+            document.getElementById("range_days").value = parseInt(rangeMatch[1].replace("-","").replace("d",""));
+        }
+
+        // absolute dates (optional future support)
+        const startMatch = report.jql.match(/created\s*>=\s*\"([0-9-]+)\"/i);
+        const endMatch = report.jql.match(/created\s*<=\s*\"([0-9-]+)\"/i);
+
+        if (startMatch) {
+            document.getElementById("start_date").value = startMatch[1];
+        }
+
+        if (endMatch) {
+            document.getElementById("end_date").value = endMatch[1];
+        }
+    }
+}
+
 // EVENTS
-document.getElementById("source").addEventListener("change", () => {
-    loadProjects();
-    loadFields();
+document.getElementById("source").addEventListener("change", async () => {
+    await loadProjects();
+    await loadIssueTypes();
+    await loadStatuses();
+    await loadFields();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
     initDropdowns();
-    loadProjects();
-    loadFields();
+
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+    const id = params.get("id");
+
+    if (mode && id) {
+        // ✅ EDIT MODE
+        await loadReportData(id);
+
+    } else {
+        // ✅ CREATE MODE
+        await loadProjects();
+        await loadIssueTypes();
+        await loadStatuses();
+        await loadFields();
+    }
 });
 
 </script>

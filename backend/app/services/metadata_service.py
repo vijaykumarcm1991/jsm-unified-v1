@@ -34,10 +34,10 @@ def get_projects(source_type):
     return res.json()
 
 
-def get_issue_types(source_type, project_key):
+def get_issue_types(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/project/{project_key}"
+    url = f"{base_url}/rest/api/2/issuetype"
 
     auth, headers = get_auth(source_type)
 
@@ -45,13 +45,12 @@ def get_issue_types(source_type, project_key):
 
     data = res.json()
 
-    return [i["name"] for i in data.get("issueTypes", [])]
+    return [i["name"] for i in data]
 
-
-def get_statuses(source_type, project_key):
+def get_statuses(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/project/{project_key}/statuses"
+    url = f"{base_url}/rest/api/2/status"
 
     auth, headers = get_auth(source_type)
 
@@ -59,13 +58,7 @@ def get_statuses(source_type, project_key):
 
     data = res.json()
 
-    statuses = set()
-
-    for item in data:
-        for s in item.get("statuses", []):
-            statuses.add(s["name"])
-
-    return list(statuses)
+    return [s["name"] for s in data]
 
 def get_fields(source_type):
     base_url = get_base_url(source_type)
