@@ -87,7 +87,8 @@ def run_report_job(report_id: int, cancel_event: Event):
         file_path = generate_excel(
             report_name=report.name,
             issues=issues,
-            fields=fields
+            fields=fields,
+            source_type=report.source_type   # ✅ ADD THIS
         )
 
         if cancel_event.is_set():

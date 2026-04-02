@@ -9,3 +9,4 @@ psycopg2-binary
 sqlalchemy
 pytz
 jinja2
+XlsxWriter
