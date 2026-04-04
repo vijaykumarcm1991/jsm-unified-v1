@@ -457,3 +457,15 @@ def get_status(report_id: int):
         return {"status": "IDLE"}
 
     return job_status[report_id]
+
+@router.get("/logs")
+def get_logs():
+    try:
+        with open("logs.txt", "r") as f:
+            lines = f.readlines()
+
+        # return last 100 lines
+        return {"logs": lines[-100:]}
+
+    except Exception as e:
+        return {"logs": [str(e)]}

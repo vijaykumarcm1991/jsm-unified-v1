@@ -1,0 +1,65 @@
+2026-04-04 07:17:55,287 | INFO | [REPORT 9] 🧵 Starting background thread
+2026-04-04 07:17:55,288 | INFO | [REPORT 9] 🚀 Manual run started
+2026-04-04 07:17:55,290 | INFO | [REPORT 9] 📡 Fetching issues
+2026-04-04 07:17:55,290 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-04 07:17:56,119 | INFO | [JSM] 📦 Fetched 100 / 307 issues
+2026-04-04 07:17:56,953 | INFO | [JSM] 📦 Fetched 200 / 307 issues
+2026-04-04 07:17:57,780 | INFO | [JSM] 📦 Fetched 300 / 307 issues
+2026-04-04 07:17:57,968 | INFO | [JSM] 📦 Fetched 307 / 307 issues
+2026-04-04 07:17:57,968 | INFO | [JSM] ✅ Fetch complete
+2026-04-04 07:17:57,969 | INFO | [JSM] 📊 Final fetched count: 307
+2026-04-04 07:17:57,970 | INFO | [REPORT 9] 📊 Total issues fetched: 307
+2026-04-04 07:17:57,970 | INFO | [REPORT 9] 📁 Generating Excel
+2026-04-04 07:17:58,384 | INFO | [REPORT 9] ✅ File created: /reports/America Movil Last 10 Days Incident Report_20260404_071758.xlsx
+2026-04-04 07:17:58,384 | INFO | [REPORT 9] 🧾 Saving history
+2026-04-04 07:17:58,431 | INFO | [REPORT 9] 📭 Email skipped (manual run)
+2026-04-04 07:17:58,431 | INFO | [REPORT 9] 🎉 Manual run completed
+2026-04-04 07:17:58,431 | INFO | [REPORT 9] 🧹 Cleaning up manual run state
+2026-04-04 07:18:42,100 | INFO | [REPORT 8] 🧵 Starting background thread
+2026-04-04 07:18:42,101 | INFO | [REPORT 8] 🚀 Manual run started
+2026-04-04 07:18:42,102 | INFO | [REPORT 8] 📡 Fetching issues
+2026-04-04 07:18:42,102 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-04 07:18:42,902 | INFO | [JSM] 📦 Fetched 100 / 3472 issues
+2026-04-04 07:18:43,605 | INFO | [JSM] 📦 Fetched 200 / 3472 issues
+2026-04-04 07:18:44,570 | INFO | [JSM] 📦 Fetched 300 / 3472 issues
+2026-04-04 07:18:45,373 | INFO | [JSM] 📦 Fetched 400 / 3472 issues
+2026-04-04 07:18:46,151 | INFO | [JSM] 📦 Fetched 500 / 3472 issues
+2026-04-04 07:18:46,873 | INFO | [JSM] 📦 Fetched 600 / 3472 issues
+2026-04-04 07:18:47,651 | INFO | [JSM] 📦 Fetched 700 / 3472 issues
+2026-04-04 07:18:48,416 | INFO | [JSM] 📦 Fetched 800 / 3472 issues
+2026-04-04 07:18:49,188 | INFO | [JSM] 📦 Fetched 900 / 3472 issues
+2026-04-04 07:18:49,955 | INFO | [JSM] 📦 Fetched 1000 / 3472 issues
+2026-04-04 07:18:50,688 | INFO | [JSM] 📦 Fetched 1100 / 3472 issues
+2026-04-04 07:18:51,387 | INFO | [JSM] 📦 Fetched 1200 / 3472 issues
+2026-04-04 07:18:52,264 | INFO | [JSM] 📦 Fetched 1300 / 3472 issues
+2026-04-04 07:18:53,019 | INFO | [JSM] 📦 Fetched 1400 / 3472 issues
+2026-04-04 07:18:53,779 | INFO | [JSM] 📦 Fetched 1500 / 3472 issues
+2026-04-04 07:18:54,493 | INFO | [JSM] 📦 Fetched 1600 / 3472 issues
+2026-04-04 07:18:55,230 | INFO | [JSM] 📦 Fetched 1700 / 3472 issues
+2026-04-04 07:18:55,914 | INFO | [JSM] 📦 Fetched 1800 / 3472 issues
+2026-04-04 07:18:56,666 | INFO | [JSM] 📦 Fetched 1900 / 3472 issues
+2026-04-04 07:18:57,436 | INFO | [JSM] 📦 Fetched 2000 / 3472 issues
+2026-04-04 07:18:58,352 | INFO | [JSM] 📦 Fetched 2100 / 3472 issues
+2026-04-04 07:18:59,257 | INFO | [JSM] 📦 Fetched 2200 / 3472 issues
+2026-04-04 07:18:59,960 | INFO | [JSM] 📦 Fetched 2300 / 3472 issues
+2026-04-04 07:19:00,726 | INFO | [JSM] 📦 Fetched 2400 / 3472 issues
+2026-04-04 07:19:01,528 | INFO | [JSM] 📦 Fetched 2500 / 3472 issues
+2026-04-04 07:19:02,306 | INFO | [JSM] 📦 Fetched 2600 / 3472 issues
+2026-04-04 07:19:03,045 | INFO | [JSM] 📦 Fetched 2700 / 3472 issues
+2026-04-04 07:19:03,772 | INFO | [JSM] 📦 Fetched 2800 / 3472 issues
+2026-04-04 07:19:04,582 | INFO | [JSM] 📦 Fetched 2900 / 3472 issues
+2026-04-04 07:19:05,528 | INFO | [JSM] 📦 Fetched 3000 / 3472 issues
+2026-04-04 07:19:06,498 | INFO | [JSM] 📦 Fetched 3100 / 3472 issues
+2026-04-04 07:19:07,175 | INFO | [JSM] 📦 Fetched 3200 / 3472 issues
+2026-04-04 07:19:07,940 | INFO | [JSM] 📦 Fetched 3300 / 3472 issues
+2026-04-04 07:19:08,758 | INFO | [JSM] 📦 Fetched 3400 / 3472 issues
+2026-04-04 07:19:09,419 | INFO | [JSM] 📦 Fetched 3472 / 3472 issues
+2026-04-04 07:19:09,419 | INFO | [JSM] ✅ Fetch complete
+2026-04-04 07:19:09,419 | INFO | [JSM] 📊 Final fetched count: 3472
+2026-04-04 07:19:09,421 | INFO | [REPORT 8] 📊 Total issues fetched: 3472
+2026-04-04 07:19:09,421 | INFO | [REPORT 8] 📁 Generating Excel
+2026-04-04 07:19:12,141 | INFO | [REPORT 8] ✅ File created: /reports/Last 10 Days JSM Report_20260404_071910.xlsx
+2026-04-04 07:19:12,141 | INFO | [REPORT 8] 🧾 Saving history
+2026-04-04 07:19:12,154 | INFO | [REPORT 8] 📭 Email skipped (manual run)
+2026-04-04 07:19:12,154 | INFO | [REPORT 8] 🎉 Manual run completed
+2026-04-04 07:19:12,154 | INFO | [REPORT 8] 🧹 Cleaning up manual run state

@@ -19,6 +19,14 @@
         </tbody>
     </table>
 
+    <div class="bg-white rounded-xl shadow-sm p-6 mt-6">
+        <h2 class="text-lg font-semibold mb-3">📜 Logs</h2>
+
+        <div id="logsContainer"
+            class="bg-black text-green-400 text-xs p-3 rounded h-64 overflow-y-auto font-mono">
+        </div>
+    </div>
+
 </div>
 
 <!-- ✅ ADD HERE -->
@@ -559,6 +567,23 @@ async function deleteReport(id) {
     loadReports();
 }
 
+async function loadLogs() {
+    try {
+        const res = await fetch("/reports/logs");
+        const data = await res.json();
+
+        const container = document.getElementById("logsContainer");
+
+        if (!container) return;
+
+        container.innerHTML = data.logs.join("<br>");
+        container.scrollTop = container.scrollHeight;
+
+    } catch (e) {
+        console.error("Logs error", e);
+    }
+}
+
 document.addEventListener("keydown", function(e) {
 
     if (e.key === "Escape") {
@@ -589,7 +614,13 @@ document.getElementById("scheduleModal").addEventListener("click", function(e) {
     }
 });
 
-document.addEventListener("DOMContentLoaded", loadReports);
+document.addEventListener("DOMContentLoaded", () => {
+    loadReports();
+    loadLogs();
+
+    setInterval(loadLogs, 5000); // refresh every 5 sec
+});
+
 </script>
 {% endraw %}
 {% endblock %}
