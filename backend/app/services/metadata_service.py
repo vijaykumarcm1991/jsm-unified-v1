@@ -1,5 +1,8 @@
+from sys import api_version
+
 import requests
 import os
+from requests.auth import HTTPBasicAuth
 
 def get_auth(source_type):
     if source_type == "JIRA":
@@ -7,12 +10,14 @@ def get_auth(source_type):
             (os.getenv("JIRA_USERNAME"), os.getenv("JIRA_PASSWORD")),
             {"Content-Type": "application/json"}
         )
-    else:
+    else:     
         return (
-            None,
+            HTTPBasicAuth(
+                os.getenv("JSM_EMAIL"),
+                os.getenv("JSM_API_TOKEN")
+            ),
             {
-                "Authorization": f"Bearer {os.getenv('JSM_PAT')}",
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             }
         )
 
@@ -25,7 +30,8 @@ def get_base_url(source_type):
 def get_projects(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/project"
+    api_version = "3" if source_type == "JSM" else "2"
+    url = f"{base_url}/rest/api/{api_version}/project"
 
     auth, headers = get_auth(source_type)
 
@@ -37,7 +43,8 @@ def get_projects(source_type):
 def get_issue_types(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/issuetype"
+    api_version = "3" if source_type == "JSM" else "2"
+    url = f"{base_url}/rest/api/{api_version}/issuetype"
 
     auth, headers = get_auth(source_type)
 
@@ -50,7 +57,8 @@ def get_issue_types(source_type):
 def get_statuses(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/status"
+    api_version = "3" if source_type == "JSM" else "2"
+    url = f"{base_url}/rest/api/{api_version}/status"
 
     auth, headers = get_auth(source_type)
 
@@ -63,7 +71,8 @@ def get_statuses(source_type):
 def get_fields(source_type):
     base_url = get_base_url(source_type)
 
-    url = f"{base_url}/rest/api/2/field"
+    api_version = "3" if source_type == "JSM" else "2"
+    url = f"{base_url}/rest/api/{api_version}/field"
 
     auth, headers = get_auth(source_type)
 

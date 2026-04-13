@@ -1,9 +1,26 @@
 def build_jql(project=None, issue_type=None, status=None,
-              start_date=None, end_date=None, range_days=None):
+              start_date=None, end_date=None, range_days=None,
+              date_template=None):
 
     from datetime import datetime, timedelta
 
     conditions = []
+
+    # 🔥 TEMPLATE OVERRIDE (OPTION A)
+    if date_template:
+        if date_template == "LAST_DAY":
+            conditions.append('created >= startofday(-1) AND created < startofday()')
+
+        elif date_template == "LAST_WEEK":
+            conditions.append('created >= startofday(-7) AND created < startofday()')
+
+        elif date_template == "LAST_MONTH":
+            conditions.append('created >= startofmonth(-1) AND created < startofmonth()')
+
+        # 🚨 IMPORTANT → skip other date filters
+        start_date = None
+        end_date = None
+        range_days = None
 
     def build_condition(field, value, is_string=True):
         if not value:

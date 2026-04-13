@@ -281,7 +281,7 @@ async function fetchStatus(id) {
         if (data.status === "RUNNING") {
             bar.style.width = `${data.progress}%`;
             bar.className = "h-3 rounded bg-blue-500 transition-all duration-500";
-            text.innerHTML = `Running (${data.progress}%)`;
+            text.innerHTML = `Fetching ${data.fetched || 0} issues (${data.progress}%)`;
 
         } else if (data.status === "COMPLETED") {
             bar.style.width = "100%";

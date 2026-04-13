@@ -52,6 +52,16 @@
         <input id="range_days" type="number" class="w-full border p-2 rounded mt-1" />
     </div>
 
+    <div>
+        <label class="text-sm font-medium">Date Template</label>
+        <select id="date_template" class="w-full border p-2 rounded mt-1">
+            <option value="">-- Select Template --</option>
+            <option value="LAST_DAY">Last Day</option>
+            <option value="LAST_WEEK">Last Week</option>
+            <option value="LAST_MONTH">Last Month</option>
+        </select>
+    </div>
+
     <button onclick="createReport()"
         class="bg-black text-white px-4 py-2 rounded w-full hover:opacity-80">
         Create Report
@@ -186,7 +196,8 @@ async function createReport() {
         fields: selectedFields,
         start_date: document.getElementById("start_date").value || null,
         end_date: document.getElementById("end_date").value || null,
-        range_days: document.getElementById("range_days").value || null
+        range_days: document.getElementById("range_days").value || null,
+        date_template: document.getElementById("date_template").value || null
     };
 
     let url = "/reports/";
@@ -333,6 +344,46 @@ async function loadReportData(id) {
             document.getElementById("end_date").value = endMatch[1];
         }
     }
+
+    // 🔥 detect template from JQL
+    if (report.jql) {
+
+        if (report.jql.includes("startofday(-1)")) {
+            document.getElementById("date_template").value = "LAST_DAY";
+        }
+        else if (report.jql.includes("startofday(-7)")) {
+            document.getElementById("date_template").value = "LAST_WEEK";
+        }
+        else if (report.jql.includes("startofmonth(-1)")) {
+            document.getElementById("date_template").value = "LAST_MONTH";
+        }
+
+        handleTemplateChange();  // 🔥 apply disable
+    }
+
+}
+
+function handleTemplateChange() {
+    const template = document.getElementById("date_template").value;
+
+    const start = document.getElementById("start_date");
+    const end = document.getElementById("end_date");
+    const range = document.getElementById("range_days");
+
+    if (template) {
+        start.disabled = true;
+        end.disabled = true;
+        range.disabled = true;
+
+        // optional clear
+        start.value = "";
+        end.value = "";
+        range.value = "";
+    } else {
+        start.disabled = false;
+        end.disabled = false;
+        range.disabled = false;
+    }
 }
 
 // EVENTS
@@ -342,6 +393,9 @@ document.getElementById("source").addEventListener("change", async () => {
     await loadStatuses();
     await loadFields();
 });
+
+document.getElementById("date_template")
+    .addEventListener("change", handleTemplateChange);
 
 document.addEventListener("DOMContentLoaded", async () => {
 

@@ -13,6 +13,7 @@ class ReportCreate(BaseModel):
     start_date: Optional[str] = None
     end_date: Optional[str] = None
     range_days: Optional[int] = None
+    date_template: Optional[str] = None 
 
 class ReportResponse(BaseModel):
     id: int

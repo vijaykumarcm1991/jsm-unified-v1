@@ -60,7 +60,10 @@ def run_report_job(report_id: int, cancel_event: Event):
         logger.info(f"[REPORT {report_id}] 📡 Fetching issues")
 
         def update_progress(current, total):
-            percent = int((current / total) * 100) if total else 0
+            if total:
+                percent = int((current / total) * 100)
+            else:
+                percent = min(current // 10, 95)  # fake progress for JSM
 
             job_status[report_id].update({
                 "fetched": current,
@@ -138,7 +141,8 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
         status=payload.status,
         start_date=payload.start_date,
         end_date=payload.end_date,
-        range_days=payload.range_days
+        range_days=payload.range_days,
+        date_template=payload.date_template
     )
 
     jql_query = payload.jql if payload.jql else generated_jql if generated_jql else None
@@ -174,7 +178,8 @@ def update_report(report_id: int, payload: ReportCreate, db: Session = Depends(g
         status=payload.status,
         start_date=payload.start_date,
         end_date=payload.end_date,
-        range_days=payload.range_days
+        range_days=payload.range_days,
+        date_template=payload.date_template
     )
 
     jql_query = payload.jql if payload.jql else generated_jql if generated_jql else None
