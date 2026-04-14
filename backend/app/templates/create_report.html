@@ -62,6 +62,15 @@
         </select>
     </div>
 
+    <div>
+        <label class="text-sm font-medium">Export Type</label>
+        <select id="export_type" class="w-full border p-2 rounded mt-1">
+            <option value="xlsx">Excel (.xlsx)</option>
+            <option value="csv">CSV (.csv)</option>
+            <option value="json">JSON (.json)</option>
+        </select>
+    </div>
+
     <button onclick="createReport()"
         class="bg-black text-white px-4 py-2 rounded w-full hover:opacity-80">
         Create Report
@@ -197,7 +206,8 @@ async function createReport() {
         start_date: document.getElementById("start_date").value || null,
         end_date: document.getElementById("end_date").value || null,
         range_days: document.getElementById("range_days").value || null,
-        date_template: document.getElementById("date_template").value || null
+        date_template: document.getElementById("date_template").value || null,
+        export_type: document.getElementById("export_type").value
     };
 
     let url = "/reports/";
@@ -361,6 +371,9 @@ async function loadReportData(id) {
         handleTemplateChange();  // 🔥 apply disable
     }
 
+    if (report.export_type) {
+        document.getElementById("export_type").value = report.export_type;
+    }
 }
 
 function handleTemplateChange() {

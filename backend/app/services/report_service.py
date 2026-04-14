@@ -1,95 +1,168 @@
-import pandas as pd
-from datetime import datetime
 import os
+import json
+import csv
+from datetime import datetime
 import pytz
-from services.metadata_service import get_fields
+from openpyxl import Workbook
+from utils.logger import logger
 
+
+# 🔥 TIMEZONE
 IST = pytz.timezone("Asia/Kolkata")
 
 
+# 🔥 HELPER — FORMAT DATETIME (UTC → IST)
 def format_datetime(value):
+    """
+    Normalize datetime formats to IST
+    """
+
+    if not value:
+        return ""
+
     try:
-        dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f%z")
+        # Jira datetime (UTC format)
+        if isinstance(value, str) and "T" in value:
+            dt = datetime.strptime(value[:19], "%Y-%m-%dT%H:%M:%S")
+            dt = pytz.utc.localize(dt).astimezone(IST)
+            return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-        dt = dt.astimezone(IST)
+        # Python datetime
+        if isinstance(value, datetime):
+            if value.tzinfo is None:
+                value = pytz.utc.localize(value)
 
-        # ✅ REMOVE TIMEZONE FOR EXCEL
-        dt = dt.replace(tzinfo=None)
-
-        return dt
+            value = value.astimezone(IST)
+            return value.strftime("%Y-%m-%d %H:%M:%S")
 
     except Exception:
-        return value
+        pass
+
+    return value
 
 
-def generate_excel(report_name: str, issues: list, fields: list, source_type: str):
+# 🔥 HELPER — NORMALIZE VALUE
+def normalize_value(value):
     """
-    Convert Jira issues → Excel file
+    Normalize Jira field values (dict, list, datetime)
     """
 
-    rows = []
+    if isinstance(value, dict):
+        value = value.get("name") or value.get("value") or str(value)
 
-    # ✅ FETCH FIELD METADATA
-    field_meta = get_fields(source_type)  # default (we will improve later)
+    elif isinstance(value, list):
+        value = ", ".join(
+            str(v.get("name") if isinstance(v, dict) else v)
+            for v in value
+        )
 
-    # ✅ CREATE MAPPING
-    field_map = {f["id"]: f["name"] for f in field_meta}
+    return format_datetime(value)
 
-    for issue in issues:
-        row = {
-            "Issue Key": issue.get("key")
-        }
 
-        issue_fields = issue.get("fields", {})
+def generate_excel(report_name, issues, fields, source_type, export_type="xlsx"):
+    """
+    Generate report file in selected format (xlsx / csv / json)
+    """
 
-        for f in fields:
-            value = issue_fields.get(f)
+    timestamp = datetime.now(IST).strftime("%Y%m%d_%H%M%S")
+    safe_name = report_name.replace(" ", "_")
 
-            # Handle nested objects (like priority)
-            if isinstance(value, dict):
-                value = value.get("name") or value.get("value")
+    logger.info(f"[EXPORT] 🔧 Generating file type: {export_type}")
 
-            # ✅ Format datetime fields
-            if isinstance(value, str) and "T" in value:
-                parsed = format_datetime(value)
-                value = parsed
+    # =========================
+    # 🔥 CSV EXPORT
+    # =========================
+    if export_type == "csv":
 
-            column_name = field_map.get(f, f)  # fallback if not found
-            row[column_name] = value
+        file_path = f"/reports/{safe_name}_{timestamp}.csv"
 
-        rows.append(row)
+        try:
+            with open(file_path, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
 
-    df = pd.DataFrame(rows)
+                # Header
+                writer.writerow(fields)
 
-    # File name
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_name = f"{report_name}_{timestamp}.xlsx"
+                for issue in issues:
+                    row = []
+                    issue_fields = issue.get("fields", {})
 
-    file_path = f"/reports/{file_name}"
+                    for field in fields:
+                        value = issue_fields.get(field, "")
+                        value = normalize_value(value)
+                        row.append(str(value) if value is not None else "")
 
-    with pd.ExcelWriter(file_path, engine="xlsxwriter") as writer:
-        df.to_excel(writer, index=False, sheet_name="Report")
+                    writer.writerow(row)
 
-        workbook = writer.book
-        worksheet = writer.sheets["Report"]
+            logger.info(f"[EXPORT] ✅ CSV created: {file_path}")
+            return file_path
 
-        date_format = workbook.add_format({"num_format": "dd-mm-yyyy hh:mm:ss"})
+        except Exception as e:
+            logger.error(f"[EXPORT] ❌ CSV failed: {str(e)}")
+            raise
 
-        # Apply format to datetime columns
-        for idx, col in enumerate(df.columns):
-            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                worksheet.set_column(idx, idx, 20, date_format)
-        
-        for idx, col in enumerate(df.columns):
-            try:
-                max_len = max(
-                    df[col].astype(str).map(len).max(),
-                    len(col)
-                ) + 2
+    # =========================
+    # 🔥 JSON EXPORT
+    # =========================
+    elif export_type == "json":
 
-                worksheet.set_column(idx, idx, max_len)
+        file_path = f"/reports/{safe_name}_{timestamp}.json"
 
-            except Exception:
-                worksheet.set_column(idx, idx, 20)
+        try:
+            data = []
 
-    return file_path
+            for issue in issues:
+                issue_fields = issue.get("fields", {})
+                row = {}
+
+                for field in fields:
+                    value = issue_fields.get(field, "")
+                    value = normalize_value(value)
+                    row[field] = value
+
+                data.append(row)
+
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+
+            logger.info(f"[EXPORT] ✅ JSON created: {file_path}")
+            return file_path
+
+        except Exception as e:
+            logger.error(f"[EXPORT] ❌ JSON failed: {str(e)}")
+            raise
+
+    # =========================
+    # 🔥 XLSX EXPORT (DEFAULT)
+    # =========================
+    else:
+
+        file_path = f"/reports/{safe_name}_{timestamp}.xlsx"
+
+        try:
+            wb = Workbook()
+            ws = wb.active
+            ws.title = "Report"
+
+            # Header
+            ws.append(fields)
+
+            for issue in issues:
+                row = []
+                issue_fields = issue.get("fields", {})
+
+                for field in fields:
+                    value = issue_fields.get(field, "")
+                    value = normalize_value(value)
+                    row.append(value if value is not None else "")
+
+                ws.append(row)
+
+            wb.save(file_path)
+
+            logger.info(f"[EXPORT] ✅ Excel created: {file_path}")
+            return file_path
+
+        except Exception as e:
+            logger.error(f"[EXPORT] ❌ Excel failed: {str(e)}")
+            raise

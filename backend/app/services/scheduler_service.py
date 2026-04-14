@@ -53,7 +53,8 @@ def run_scheduled_report(report_id: int):
             report_name=report.name,
             issues=issues,
             fields=fields,
-            source_type=report.source_type
+            source_type=report.source_type,
+            export_type=report.export_type   # 🔥 NEW
         )
 
         logger.info(f"[REPORT {report_id}] ✅ File created: {file_path}")

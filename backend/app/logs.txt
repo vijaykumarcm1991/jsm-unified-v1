@@ -2823,3 +2823,127 @@
 2026-04-14 06:01:02,437 | INFO | ✅ Email sent successfully on attempt 1
 2026-04-14 06:01:02,437 | INFO | [REPORT 13] 🎉 Completed successfully
 2026-04-14 06:01:02,437 | INFO | [REPORT 13] 🧹 Cleaning up job state
+2026-04-14 06:03:52,716 | INFO | [REPORT 13] 🧵 Starting background thread
+2026-04-14 06:03:52,717 | INFO | [REPORT 13] 🚀 Manual run started
+2026-04-14 06:03:52,718 | INFO | [REPORT 13] 📡 Fetching issues
+2026-04-14 06:03:52,718 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 06:03:52,718 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:53,106 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"summary":"ENR is lower than 85 % on mdc1-crbt-ivr01/10.4.80.9","priority":{"self":"
+2026-04-14 06:03:53,107 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:53,107 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 06:03:53,107 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:53,360 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"summary":"Free disk space is less than 20% on volume /mnt/as01","priority":{"self":"h
+2026-04-14 06:03:53,360 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:53,360 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 06:03:53,361 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:53,612 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"summary":"Notification thirdPartyHttpProcessorTrap with variable(s): trapEntity=\"
+2026-04-14 06:03:53,613 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:53,613 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 06:03:53,613 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:53,858 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"summary":"URL http://10.119.196.150:8080/subscription Down","priority":{"self":"https
+2026-04-14 06:03:53,858 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 06:03:53,858 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 06:03:53,858 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 06:03:53,858 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 06:03:53,859 | INFO | [REPORT 13] 📊 Total issues fetched: 365
+2026-04-14 06:03:53,860 | INFO | [REPORT 13] 📁 Generating Excel
+2026-04-14 06:03:54,147 | INFO | [REPORT 13] ✅ File created: /reports/test report jsm_20260414_060354.xlsx
+2026-04-14 06:03:54,147 | INFO | [REPORT 13] 🧾 Saving history
+2026-04-14 06:03:54,172 | INFO | [REPORT 13] 📭 Email skipped (manual run)
+2026-04-14 06:03:54,172 | INFO | [REPORT 13] 🎉 Manual run completed
+2026-04-14 06:03:54,172 | INFO | [REPORT 13] 🧹 Cleaning up manual run state
+2026-04-14 06:03:54,737 | INFO | [REPORT 13] 🧵 Starting background thread
+2026-04-14 06:03:54,738 | INFO | [REPORT 13] 🚀 Manual run started
+2026-04-14 06:03:54,739 | INFO | [REPORT 13] 📡 Fetching issues
+2026-04-14 06:03:54,740 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 06:03:54,740 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:55,090 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"summary":"ENR is lower than 85 % on mdc1-crbt-ivr01/10.4.80.9","priority":{"self":"
+2026-04-14 06:03:55,091 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:55,091 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 06:03:55,091 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:55,335 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"summary":"Free disk space is less than 20% on volume /mnt/as01","priority":{"self":"h
+2026-04-14 06:03:55,335 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:55,335 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 06:03:55,335 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:55,589 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"summary":"Notification thirdPartyHttpProcessorTrap with variable(s): trapEntity=\"
+2026-04-14 06:03:55,590 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:03:55,590 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 06:03:55,590 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:03:55,836 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"summary":"URL http://10.119.196.150:8080/subscription Down","priority":{"self":"https
+2026-04-14 06:03:55,836 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 06:03:55,836 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 06:03:55,837 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 06:03:55,837 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 06:03:55,838 | INFO | [REPORT 13] 📊 Total issues fetched: 365
+2026-04-14 06:03:55,838 | INFO | [REPORT 13] 📁 Generating Excel
+2026-04-14 06:03:56,167 | INFO | [REPORT 13] ✅ File created: /reports/test report jsm_20260414_060356.xlsx
+2026-04-14 06:03:56,167 | INFO | [REPORT 13] 🧾 Saving history
+2026-04-14 06:03:56,192 | INFO | [REPORT 13] 📭 Email skipped (manual run)
+2026-04-14 06:03:56,192 | INFO | [REPORT 13] 🎉 Manual run completed
+2026-04-14 06:03:56,192 | INFO | [REPORT 13] 🧹 Cleaning up manual run state
+2026-04-14 06:30:57,815 | INFO | [REPORT 12] ✏️ Updated
+2026-04-14 06:31:36,422 | INFO | [REPORT 12] ✏️ Updated
+2026-04-14 06:31:56,610 | INFO | [REPORT 12] ✏️ Updated
+2026-04-14 06:32:06,093 | INFO | [REPORT 12] 🧵 Starting background thread
+2026-04-14 06:32:06,093 | INFO | [REPORT 12] 🚀 Manual run started
+2026-04-14 06:32:06,095 | INFO | [REPORT 12] 📡 Fetching issues
+2026-04-14 06:32:06,095 | INFO | [JIRA] 🔍 Starting paginated fetch
+2026-04-14 06:32:06,095 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:32:06,619 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":0,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800261","self":"https://jira.onmobile.com/rest/api/2/issue/1800261","key":"OPS-35699","fields":{"summary":"jar update in Mu
+2026-04-14 06:32:06,619 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:32:06,620 | INFO | [JIRA] 📦 Fetched 100 issues
+2026-04-14 06:32:06,620 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:32:07,114 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":100,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800875","self":"https://jira.onmobile.com/rest/api/2/issue/1800875","key":"OPS-35828","fields":{"summary":"Facing issue i
+2026-04-14 06:32:07,114 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:32:07,114 | INFO | [JIRA] 📦 Fetched 200 issues
+2026-04-14 06:32:07,114 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:32:07,610 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":200,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1801857","self":"https://jira.onmobile.com/rest/api/2/issue/1801857","key":"OPS-35961","fields":{"summary":"Application mo
+2026-04-14 06:32:07,611 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:32:07,611 | INFO | [JIRA] 📦 Fetched 300 issues
+2026-04-14 06:32:07,611 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:32:08,173 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":300,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1802832","self":"https://jira.onmobile.com/rest/api/2/issue/1802832","key":"OPS-36091","fields":{"summary":"FW: Egypt || C
+2026-04-14 06:32:08,173 | INFO | [JIRA] DEBUG → batch=87, total=387
+2026-04-14 06:32:08,173 | INFO | [JIRA] 📦 Fetched 387 issues
+2026-04-14 06:32:08,173 | INFO | [JIRA] ✅ Reached total, stopping
+2026-04-14 06:32:08,174 | INFO | [JIRA] 📊 Final fetched count: 387
+2026-04-14 06:32:08,175 | INFO | [REPORT 12] 📊 Total issues fetched: 387
+2026-04-14 06:32:08,175 | INFO | [REPORT 12] 📁 Generating Excel
+2026-04-14 06:32:08,175 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 06:32:08,211 | INFO | [EXPORT] ✅ CSV created: /reports/Jira_Test_20260414_063208.csv
+2026-04-14 06:32:08,211 | INFO | [REPORT 12] ✅ File created: /reports/Jira_Test_20260414_063208.csv
+2026-04-14 06:32:08,211 | INFO | [REPORT 12] 🧾 Saving history
+2026-04-14 06:32:08,237 | INFO | [REPORT 12] 📭 Email skipped (manual run)
+2026-04-14 06:32:08,237 | INFO | [REPORT 12] 🎉 Manual run completed
+2026-04-14 06:32:08,237 | INFO | [REPORT 12] 🧹 Cleaning up manual run state
+2026-04-14 06:32:57,741 | INFO | [REPORT 12] ✏️ Updated
+2026-04-14 06:33:02,405 | INFO | [REPORT 12] 🧵 Starting background thread
+2026-04-14 06:33:02,405 | INFO | [REPORT 12] 🚀 Manual run started
+2026-04-14 06:33:02,407 | INFO | [REPORT 12] 📡 Fetching issues
+2026-04-14 06:33:02,407 | INFO | [JIRA] 🔍 Starting paginated fetch
+2026-04-14 06:33:02,407 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:33:02,859 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":0,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800261","self":"https://jira.onmobile.com/rest/api/2/issue/1800261","key":"OPS-35699","fields":{"summary":"jar update in Mu
+2026-04-14 06:33:02,859 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:33:02,859 | INFO | [JIRA] 📦 Fetched 100 issues
+2026-04-14 06:33:02,859 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:33:03,267 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":100,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800875","self":"https://jira.onmobile.com/rest/api/2/issue/1800875","key":"OPS-35828","fields":{"summary":"Facing issue i
+2026-04-14 06:33:03,267 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:33:03,267 | INFO | [JIRA] 📦 Fetched 200 issues
+2026-04-14 06:33:03,267 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:33:03,678 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":200,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1801857","self":"https://jira.onmobile.com/rest/api/2/issue/1801857","key":"OPS-35961","fields":{"summary":"Application mo
+2026-04-14 06:33:03,678 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 06:33:03,678 | INFO | [JIRA] 📦 Fetched 300 issues
+2026-04-14 06:33:03,678 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 06:33:04,178 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":300,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1802832","self":"https://jira.onmobile.com/rest/api/2/issue/1802832","key":"OPS-36091","fields":{"summary":"FW: Egypt || C
+2026-04-14 06:33:04,179 | INFO | [JIRA] DEBUG → batch=87, total=387
+2026-04-14 06:33:04,179 | INFO | [JIRA] 📦 Fetched 387 issues
+2026-04-14 06:33:04,179 | INFO | [JIRA] ✅ Reached total, stopping
+2026-04-14 06:33:04,179 | INFO | [JIRA] 📊 Final fetched count: 387
+2026-04-14 06:33:04,180 | INFO | [REPORT 12] 📊 Total issues fetched: 387
+2026-04-14 06:33:04,180 | INFO | [REPORT 12] 📁 Generating Excel
+2026-04-14 06:33:04,180 | INFO | [EXPORT] 🔧 Generating file type: json
+2026-04-14 06:33:04,213 | INFO | [EXPORT] ✅ JSON created: /reports/Jira_Test_20260414_063304.json
+2026-04-14 06:33:04,213 | INFO | [REPORT 12] ✅ File created: /reports/Jira_Test_20260414_063304.json
+2026-04-14 06:33:04,213 | INFO | [REPORT 12] 🧾 Saving history
+2026-04-14 06:33:04,265 | INFO | [REPORT 12] 📭 Email skipped (manual run)
+2026-04-14 06:33:04,265 | INFO | [REPORT 12] 🎉 Manual run completed
+2026-04-14 06:33:04,265 | INFO | [REPORT 12] 🧹 Cleaning up manual run state

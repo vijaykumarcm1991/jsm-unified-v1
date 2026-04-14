@@ -91,7 +91,8 @@ def run_report_job(report_id: int, cancel_event: Event):
             report_name=report.name,
             issues=issues,
             fields=fields,
-            source_type=report.source_type   # ✅ ADD THIS
+            source_type=report.source_type,   # ✅ ADD THIS
+            export_type=report.export_type   # 🔥 NEW
         )
 
         if cancel_event.is_set():
@@ -155,7 +156,8 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
         status=",".join(payload.status) if isinstance(payload.status, list) else payload.status,
         fields=str(payload.fields),
         jql=jql_query,
-        created_at=datetime.now(IST)
+        created_at=datetime.now(IST),
+        export_type=payload.export_type or "xlsx"   # 🔥 NEW
     )
 
     db.add(report)
@@ -191,6 +193,7 @@ def update_report(report_id: int, payload: ReportCreate, db: Session = Depends(g
     report.status = ",".join(payload.status) if isinstance(payload.status, list) else payload.status
     report.fields = str(payload.fields)
     report.jql = jql_query
+    report.export_type = payload.export_type or "xlsx"   # 🔥 NEW
 
     db.commit()
 
@@ -215,7 +218,8 @@ def copy_report(report_id: int, db: Session = Depends(get_db)):
         status=original.status,
         fields=original.fields,
         jql=original.jql,
-        created_at=datetime.now(IST)
+        created_at=datetime.now(IST),
+        export_type=original.export_type   # 🔥 NEW
     )
 
     db.add(new_report)
