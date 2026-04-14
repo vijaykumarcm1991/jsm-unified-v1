@@ -79,13 +79,39 @@ def run_report_job(report_id: int, cancel_event: Event):
                 "progress": percent
             })
         
-        issues, field_names_map = fetch_issues(
+        result = fetch_issues(
             source_type=report.source_type,
             jql=report.jql,
             fields=fields,
-            cancel_event=cancel_event,  # 🔥 IMPORTANT
+            cancel_event=cancel_event,
             progress_callback=update_progress
         )
+
+        # 🔥 SAFE UNPACK
+        if isinstance(result, tuple) and len(result) == 2:
+            issues, field_names_map = result
+        else:
+            issues = result
+            field_names_map = {}
+
+        # 🔥 SAFETY
+        if not isinstance(issues, list):
+            logger.error(f"[REPORT {report_id}] ❌ Invalid issues type → {type(issues)}")
+            issues = []
+
+        # 🔥 HANDLE NESTED LIST (ROBUST)
+        while issues and isinstance(issues[0], list):
+            logger.warning(f"[REPORT {report_id}] ⚠️ Nested issues detected → flattening")
+            issues = issues[0]
+
+        # 🔥 FINAL VALIDATION
+        if issues and not isinstance(issues[0], dict):
+            logger.error(f"[REPORT {report_id}] ❌ Invalid issue item type → {type(issues[0])}")
+            issues = []
+
+        # 🔥 DEBUG (ADD HERE — FINAL STATE)
+        logger.info(f"[REPORT {report_id}] DEBUG → issues_type={type(issues)}, map_type={type(field_names_map)}")
+        logger.info(f"[REPORT {report_id}] DEBUG → first_issue_type={type(issues[0]) if issues else None}")
 
         if cancel_event.is_set():
             logger.info(f"[REPORT {report_id}] 🛑 Cancel detected after fetch")
@@ -98,7 +124,11 @@ def run_report_job(report_id: int, cancel_event: Event):
         # ✅ BUILD METADATA MAP
         meta_map = build_field_map(report.source_type)
 
-        # ✅ MERGE (API overrides metadata)
+        # 🔥 SAFETY — ensure dict
+        if not isinstance(field_names_map, dict):
+            logger.warning(f"[REPORT {report_id}] ⚠️ field_names_map invalid → {type(field_names_map)}")
+            field_names_map = {}
+
         final_map = {**meta_map, **field_names_map}
 
         file_path = generate_excel(
