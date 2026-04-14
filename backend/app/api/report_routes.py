@@ -150,7 +150,8 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
         start_date=payload.start_date,
         end_date=payload.end_date,
         range_days=payload.range_days,
-        date_template=payload.date_template
+        date_template=payload.date_template,
+        date_field=payload.date_field or "created"
     )
 
     jql_query = payload.jql if payload.jql else generated_jql if generated_jql else None
@@ -164,7 +165,8 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
         fields=str(payload.fields),
         jql=jql_query,
         created_at=datetime.now(IST),
-        export_type=payload.export_type or "xlsx"   # 🔥 NEW
+        export_type=payload.export_type or "xlsx",   # 🔥 NEW
+        date_field=payload.date_field or "created"   # 🔥 NEW
     )
 
     db.add(report)
@@ -193,7 +195,8 @@ def update_report(
         start_date=payload.start_date,
         end_date=payload.end_date,
         range_days=payload.range_days,
-        date_template=payload.date_template
+        date_template=payload.date_template,
+        date_field=payload.date_field or "created"
     )
 
     jql_query = payload.jql if payload.jql else generated_jql if generated_jql else None
@@ -206,6 +209,7 @@ def update_report(
     report.fields = str(payload.fields)
     report.jql = jql_query
     report.export_type = payload.export_type or "xlsx"   # 🔥 NEW
+    report.date_field = payload.date_field or "created"   # 🔥 NEW
 
     db.commit()
 
@@ -231,7 +235,8 @@ def copy_report(report_id: int, db: Session = Depends(get_db)):
         fields=original.fields,
         jql=original.jql,
         created_at=datetime.now(IST),
-        export_type=original.export_type   # 🔥 NEW
+        export_type=original.export_type,   # 🔥 NEW
+        date_field=original.date_field    # 🔥 NEW
     )
 
     db.add(new_report)

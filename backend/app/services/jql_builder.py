@@ -1,6 +1,6 @@
 def build_jql(project=None, issue_type=None, status=None,
               start_date=None, end_date=None, range_days=None,
-              date_template=None):
+              date_template=None, date_field="created"):
 
     from datetime import datetime, timedelta
 
@@ -9,13 +9,13 @@ def build_jql(project=None, issue_type=None, status=None,
     # 🔥 TEMPLATE OVERRIDE (OPTION A)
     if date_template:
         if date_template == "LAST_DAY":
-            conditions.append('created >= startofday(-1) AND created < startofday()')
+            conditions.append(f'{date_field} >= startofday(-1) AND {date_field} < startofday()')
 
         elif date_template == "LAST_WEEK":
-            conditions.append('created >= startofday(-7) AND created < startofday()')
+            conditions.append(f'{date_field} >= startofday(-7) AND {date_field} < startofday()')
 
         elif date_template == "LAST_MONTH":
-            conditions.append('created >= startofmonth(-1) AND created < startofmonth()')
+            conditions.append(f'{date_field} >= startofmonth(-1) AND {date_field} < startofmonth()')
 
         # 🚨 IMPORTANT → skip other date filters
         start_date = None
@@ -53,18 +53,18 @@ def build_jql(project=None, issue_type=None, status=None,
 
     # ✅ Date filters
     if range_days:
-        conditions.append(f'created >= -{range_days}d')
+        conditions.append(f'{date_field} >= -{range_days}d')
 
     else:
         if start_date:
-            conditions.append(f'created >= "{start_date}"')
+            conditions.append(f'{date_field} >= "{start_date}"')
 
         if end_date:
             next_day = (
                 datetime.strptime(end_date, "%Y-%m-%d") + timedelta(days=1)
             ).strftime("%Y-%m-%d")
 
-            conditions.append(f'created < "{next_day}"')
+            conditions.append(f'{date_field} < "{next_day}"')
 
     if not conditions:
         return ""

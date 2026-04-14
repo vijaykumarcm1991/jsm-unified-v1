@@ -15,6 +15,7 @@ class ReportCreate(BaseModel):
     range_days: Optional[int] = None
     date_template: Optional[str] = None 
     export_type: Optional[str] = "xlsx"
+    date_field: Optional[str] = "created"
 
 class ReportResponse(BaseModel):
     id: int

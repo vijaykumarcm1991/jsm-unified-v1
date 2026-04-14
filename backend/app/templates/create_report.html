@@ -63,6 +63,14 @@
     </div>
 
     <div>
+        <label class="text-sm font-medium">Date Field</label>
+        <select id="date_field" class="w-full border p-2 rounded mt-1">
+            <option value="created">Created</option>
+            <option value="updated">Updated</option>
+        </select>
+    </div>
+
+    <div>
         <label class="text-sm font-medium">Export Type</label>
         <select id="export_type" class="w-full border p-2 rounded mt-1">
             <option value="xlsx">Excel (.xlsx)</option>
@@ -223,7 +231,8 @@ async function createReport() {
         end_date: document.getElementById("end_date").value || null,
         range_days: document.getElementById("range_days").value || null,
         date_template: document.getElementById("date_template").value || null,
-        export_type: document.getElementById("export_type").value
+        export_type: document.getElementById("export_type").value,
+        date_field: document.getElementById("date_field").value
     };
 
     let url = "/reports/";
@@ -400,6 +409,9 @@ async function loadReportData(id) {
     if (report.export_type) {
         document.getElementById("export_type").value = report.export_type;
     }
+    if (report.date_field) {
+        document.getElementById("date_field").value = report.date_field;
+}
 }
 
 function handleTemplateChange() {

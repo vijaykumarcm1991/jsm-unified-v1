@@ -22,3 +22,4 @@ class Report(Base):
 
     created_at = Column(DateTime, default=datetime.now(IST))
     export_type = Column(String, default="xlsx")
+    date_field = Column(String, default="created")
