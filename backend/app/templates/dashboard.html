@@ -100,6 +100,12 @@
             <input type="text" id="ccEmail" placeholder="CC (comma separated)"
                 class="w-full border p-2 rounded mb-2">
 
+            <input type="text" id="emailSubject" placeholder="Email Subject"
+                class="w-full border p-2 rounded mb-2">
+
+            <textarea id="emailBody" placeholder="Email Body"
+                class="w-full border p-2 rounded mb-2 h-24"></textarea>
+
             <div class="flex justify-between mt-4">
                 <button onclick="closeSchedule()" class="bg-gray-400 text-white px-4 py-2 rounded">
                     Cancel
@@ -417,7 +423,16 @@ async function openSchedule(id) {
                 <p class="text-sm text-gray-600">${data.email_to}</p>
 
                 <div class="flex gap-2 mt-2">
-                    <button onclick="editSchedule('${data.frequency}', '${data.time}', '${data.day_of_week}', '${data.day_of_month}', '${data.email_to}', '${data.cc_email || ""}')"
+                    <button onclick="editSchedule(
+                        '${data.frequency}',
+                        '${data.time}',
+                        '${data.day_of_week}',
+                        '${data.day_of_month}',
+                        '${data.email_to}',
+                        '${data.cc_email || ""}',
+                        '${data.email_subject || ""}',
+                        '${data.email_body || ""}'
+                    )"
                         class="bg-blue-500 text-white px-3 py-1 rounded text-xs">Edit</button>
 
                     <button onclick="deleteSchedule()"
@@ -466,7 +481,9 @@ async function saveSchedule() {
         day_of_week: document.getElementById("dayOfWeek").value,
         day_of_month: document.getElementById("dayOfMonth").value,
         email_to: document.getElementById("emailTo").value,
-        cc_email: document.getElementById("ccEmail").value 
+        cc_email: document.getElementById("ccEmail").value,
+        email_subject: document.getElementById("emailSubject").value,  // 🔥 NEW
+        email_body: document.getElementById("emailBody").value         // 🔥 NEW
     };
 
     const res = await fetch(`/reports/${id}/schedule`, {
@@ -511,7 +528,7 @@ function showForm() {
     document.getElementById("scheduleForm").classList.remove("hidden");
 }
 
-function editSchedule(freq, time, dow, dom, email, cc_email) {
+function editSchedule(freq, time, dow, dom, email, cc_email, subject, body) {
 
     showForm();
 
@@ -519,6 +536,8 @@ function editSchedule(freq, time, dow, dom, email, cc_email) {
     document.getElementById("scheduleTime").value = time;
     document.getElementById("emailTo").value = email;
     document.getElementById("ccEmail").value = cc_email;
+    document.getElementById("emailSubject").value = subject || "";
+    document.getElementById("emailBody").value = body || "";
 
     if (dow) document.getElementById("dayOfWeek").value = dow;
     if (dom) document.getElementById("dayOfMonth").value = dom;
@@ -539,9 +558,9 @@ async function copyReport(id) {
         // ✅ Refresh table
         loadReports();
 
-    } catch (e) {
-        showToast("Copy failed", "error");
-    }
+        } catch (e) {
+            showToast("Copy failed", "error");
+        }
 }
 
 function editReport(id) {

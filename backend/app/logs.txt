@@ -2766,3 +2766,60 @@
 2026-04-13 19:18:27,555 | INFO | [REPORT 13] 📭 Email skipped (manual run)
 2026-04-13 19:18:27,556 | INFO | [REPORT 13] 🎉 Manual run completed
 2026-04-13 19:18:27,556 | INFO | [REPORT 13] 🧹 Cleaning up manual run state
+2026-04-13 21:06:27,072 | INFO | [REPORT 13] ✏️ Updated
+2026-04-13 21:08:00,000 | INFO | [REPORT 13] 🚀 Starting execution
+2026-04-13 21:08:00,002 | INFO | [REPORT 13] 📡 Fetching issues
+2026-04-13 21:08:00,002 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-13 21:08:00,002 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-13 21:08:00,366 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"608697","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/608697","key":"AIRIND-49667","fields":{"summary":"Thirdparty activation success percentage is less than 90 on rbt2.hyd.at
+2026-04-13 21:08:00,367 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-13 21:08:00,367 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-13 21:08:00,367 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-13 21:08:00,658 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"609632","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/609632","key":"NDCCLOUD-141367","fields":{"summary":"RESPTIME OF TOTAL FOR ALL CIRCLES","priority":{"self":"https://onmob
+2026-04-13 21:08:00,659 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-13 21:08:00,659 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-13 21:08:00,659 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-13 21:08:00,968 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"610973","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/610973","key":"VODSA-14721","fields":{"summary":"Notification thirdPartyHttpProcessorTrap with variable(s): trapEntity=\"
+2026-04-13 21:08:00,968 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-13 21:08:00,968 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-13 21:08:00,969 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-13 21:08:01,201 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612376","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612376","key":"NDCCLOUD-141412","fields":{"summary":"QUEUE ACTIVE CHECKBALANCE FOR ALL CIRCLES","priority":{"self":"https
+2026-04-13 21:08:01,201 | INFO | [JSM] DEBUG → batch=32, total=None
+2026-04-13 21:08:01,202 | INFO | [JSM] 📦 Fetched 332 issues
+2026-04-13 21:08:01,202 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-13 21:08:01,202 | INFO | [JSM] 📊 Final fetched count: 332
+2026-04-13 21:08:01,203 | INFO | [REPORT 13] 📊 Total issues fetched: 332
+2026-04-13 21:08:01,203 | INFO | [REPORT 13] 📁 Generating Excel
+2026-04-13 21:08:01,203 | ERROR | [REPORT 13] ❌ Failed: generate_excel() missing 1 required positional argument: 'source_type'
+2026-04-13 21:08:01,203 | INFO | [REPORT 13] 🧹 Cleaning up job state
+2026-04-14 05:59:18,251 | INFO | Loading schedule for report 13
+2026-04-14 06:01:00,000 | INFO | [REPORT 13] 🚀 Starting execution
+2026-04-14 06:01:00,019 | INFO | [REPORT 13] 📡 Fetching issues
+2026-04-14 06:01:00,019 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 06:01:00,019 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:01:00,504 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"summary":"ENR is lower than 85 % on mdc1-crbt-ivr01/10.4.80.9","priority":{"self":"
+2026-04-14 06:01:00,505 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:01:00,505 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 06:01:00,505 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:01:00,820 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"summary":"Free disk space is less than 20% on volume /mnt/as01","priority":{"self":"h
+2026-04-14 06:01:00,820 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:01:00,820 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 06:01:00,820 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:01:01,117 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"summary":"Notification thirdPartyHttpProcessorTrap with variable(s): trapEntity=\"
+2026-04-14 06:01:01,118 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 06:01:01,118 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 06:01:01,118 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 06:01:01,353 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"summary":"URL http://10.119.196.150:8080/subscription Down","priority":{"self":"https
+2026-04-14 06:01:01,353 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 06:01:01,354 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 06:01:01,354 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 06:01:01,354 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 06:01:01,355 | INFO | [REPORT 13] 📊 Total issues fetched: 365
+2026-04-14 06:01:01,355 | INFO | [REPORT 13] 📁 Generating Excel
+2026-04-14 06:01:01,662 | INFO | [REPORT 13] ✅ File created: /reports/test report jsm_20260414_060101.xlsx
+2026-04-14 06:01:01,699 | INFO | [REPORT 13] 🧾 History saved
+2026-04-14 06:01:01,702 | INFO | [REPORT 13] 📧 Sending email to vijay.kumarcm@onmobile.com
+2026-04-14 06:01:01,761 | INFO | 📧 Attempt 1: Connecting to SMTP smtp.office365.com:587
+2026-04-14 06:01:02,437 | INFO | ✅ Email sent successfully on attempt 1
+2026-04-14 06:01:02,437 | INFO | [REPORT 13] 🎉 Completed successfully
+2026-04-14 06:01:02,437 | INFO | [REPORT 13] 🧹 Cleaning up job state

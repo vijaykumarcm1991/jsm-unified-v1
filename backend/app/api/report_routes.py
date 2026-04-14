@@ -348,6 +348,8 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
     email_to = payload.get("email_to")
     cc_email = payload.get("cc_email")   # ✅ NEW
     time = payload.get("time")
+    email_subject = payload.get("email_subject")
+    email_body = payload.get("email_body")
 
     day_of_week = payload.get("day_of_week")
     day_of_month = payload.get("day_of_month")
@@ -373,7 +375,9 @@ def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)
         day_of_week=day_of_week if frequency == "WEEKLY" else None,
         day_of_month=day_of_month if frequency == "MONTHLY" else None,
         email_to=email_to,
-        cc_email=cc_email   # ✅ NEW
+        cc_email=cc_email,   # ✅ NEW
+        email_subject=email_subject,
+        email_body=email_body
     )
 
     db.add(schedule)
@@ -411,7 +415,9 @@ def get_schedule(report_id: int, db: Session = Depends(get_db)):
         "day_of_week": schedule.day_of_week,
         "day_of_month": schedule.day_of_month,
         "email_to": schedule.email_to,
-        "cc_email": schedule.cc_email   # ✅ NEW
+        "cc_email": schedule.cc_email,   # ✅ NEW
+        "email_subject": schedule.email_subject,
+        "email_body": schedule.email_body
     }
 
 

@@ -52,7 +52,8 @@ def run_scheduled_report(report_id: int):
         file_path = generate_excel(
             report_name=report.name,
             issues=issues,
-            fields=fields
+            fields=fields,
+            source_type=report.source_type
         )
 
         logger.info(f"[REPORT {report_id}] ✅ File created: {file_path}")
@@ -79,19 +80,27 @@ def run_scheduled_report(report_id: int):
 
             cc_list = [e.strip() for e in schedule.cc_email.split(",")] if schedule.cc_email else []
 
+            # 🔥 DEFAULTS
+            default_subject = f"Report: {report.name}"
+            default_body = f"""
+            Hello,
+
+            Please find attached report: {report.name}
+
+            Generated at: {datetime.now(IST)}
+
+            Regards,
+            Jira Reporting System
+            """
+
+            # 🔥 APPLY CUSTOM (SAFE)
+            subject = schedule.email_subject if schedule.email_subject else default_subject
+            body = schedule.email_body if schedule.email_body else default_body
+
             send_email(
                 to_emails=[e.strip() for e in schedule.email_to.split(",")],
-                subject=f"Report: {report.name}",
-                body=f"""
-                Hello,
-
-                Please find attached report: {report.name}
-
-                Generated at: {datetime.now(IST)}
-
-                Regards,
-                Jira Reporting System
-                """,
+                subject=subject,
+                body=body,
                 file_path=file_path,
                 cc_emails=cc_list
             )

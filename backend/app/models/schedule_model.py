@@ -14,3 +14,5 @@ class ReportSchedule(Base):
     day_of_month = Column(Integer, nullable=True)
     email_to = Column(String, nullable=True)
     cc_email = Column(String, nullable=True)   # ✅ NEW
+    email_subject = Column(String, nullable=True)
+    email_body = Column(String, nullable=True)
