@@ -10,3 +10,4 @@ sqlalchemy
 pytz
 jinja2
 XlsxWriter
+python-jose[cryptography]

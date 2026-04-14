@@ -2947,3 +2947,37 @@
 2026-04-14 06:33:04,265 | INFO | [REPORT 12] 📭 Email skipped (manual run)
 2026-04-14 06:33:04,265 | INFO | [REPORT 12] 🎉 Manual run completed
 2026-04-14 06:33:04,265 | INFO | [REPORT 12] 🧹 Cleaning up manual run state
+2026-04-14 11:42:00,000 | INFO | [REPORT 12] 🚀 Starting execution
+2026-04-14 11:42:00,003 | INFO | [REPORT 12] 📡 Fetching issues
+2026-04-14 11:42:00,003 | INFO | [JIRA] 🔍 Starting paginated fetch
+2026-04-14 11:42:00,003 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 11:42:00,416 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":0,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800261","self":"https://jira.onmobile.com/rest/api/2/issue/1800261","key":"OPS-35699","fields":{"summary":"jar update in Mu
+2026-04-14 11:42:00,416 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 11:42:00,417 | INFO | [JIRA] 📦 Fetched 100 issues
+2026-04-14 11:42:00,417 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 11:42:00,862 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":100,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1800875","self":"https://jira.onmobile.com/rest/api/2/issue/1800875","key":"OPS-35828","fields":{"summary":"Facing issue i
+2026-04-14 11:42:00,863 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 11:42:00,863 | INFO | [JIRA] 📦 Fetched 200 issues
+2026-04-14 11:42:00,863 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 11:42:01,311 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":200,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1801857","self":"https://jira.onmobile.com/rest/api/2/issue/1801857","key":"OPS-35961","fields":{"summary":"Application mo
+2026-04-14 11:42:01,312 | INFO | [JIRA] DEBUG → batch=100, total=387
+2026-04-14 11:42:01,312 | INFO | [JIRA] 📦 Fetched 300 issues
+2026-04-14 11:42:01,312 | INFO | [JIRA] JQL → created >= startofmonth(-1) AND created < startofmonth() AND project = OPS AND issuetype IN ("Bug","Task") ORDER BY created ASC
+2026-04-14 11:42:01,812 | INFO | [JIRA] RAW RESPONSE → {"expand":"schema,names","startAt":300,"maxResults":100,"total":387,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,transitions,renderedFields","id":"1802832","self":"https://jira.onmobile.com/rest/api/2/issue/1802832","key":"OPS-36091","fields":{"summary":"FW: Egypt || C
+2026-04-14 11:42:01,813 | INFO | [JIRA] DEBUG → batch=87, total=387
+2026-04-14 11:42:01,813 | INFO | [JIRA] 📦 Fetched 387 issues
+2026-04-14 11:42:01,813 | INFO | [JIRA] ✅ Reached total, stopping
+2026-04-14 11:42:01,813 | INFO | [JIRA] 📊 Final fetched count: 387
+2026-04-14 11:42:01,814 | INFO | [REPORT 12] 📊 Total issues fetched: 387
+2026-04-14 11:42:01,814 | INFO | [REPORT 12] 📁 Generating Excel
+2026-04-14 11:42:01,814 | INFO | [EXPORT] 🔧 Generating file type: json
+2026-04-14 11:42:01,851 | INFO | [EXPORT] ✅ JSON created: /reports/Jira_Test_20260414_114201.json
+2026-04-14 11:42:01,852 | INFO | [REPORT 12] ✅ File created: /reports/Jira_Test_20260414_114201.json
+2026-04-14 11:42:01,882 | INFO | [REPORT 12] 🧾 History saved
+2026-04-14 11:42:01,885 | INFO | [REPORT 12] 📧 Sending email to vijay.kumarcm@onmobile.com
+2026-04-14 11:42:01,941 | INFO | 📧 Attempt 1: Connecting to SMTP smtp.office365.com:587
+2026-04-14 11:42:03,025 | INFO | ✅ Email sent successfully on attempt 1
+2026-04-14 11:42:03,026 | INFO | [REPORT 12] 🎉 Completed successfully
+2026-04-14 11:42:03,026 | INFO | [REPORT 12] 🧹 Cleaning up job state
+2026-04-14 12:33:29,985 | INFO | Loading schedule for report 12
+2026-04-14 12:48:05,073 | INFO | Loading schedule for report 12

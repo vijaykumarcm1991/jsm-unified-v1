@@ -13,15 +13,12 @@ from models.history_model import ReportHistory
 from models.schedule_model import ReportSchedule
 from services.scheduler_service import scheduler, run_scheduled_report
 from utils.logger import logger
-from services.metadata_service import (
-    get_projects,
-    get_issue_types,
-    get_statuses,
-    get_fields
-)
+from services.metadata_service import (get_projects, get_issue_types, get_statuses, get_fields)
 from threading import Thread, Event
 from fastapi.responses import FileResponse
 import os
+from fastapi import Header
+from utils.auth import verify_token
 
 running_jobs = {}
 cancel_flags = {}
@@ -32,6 +29,16 @@ IST = pytz.timezone("Asia/Kolkata")
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 
+
+def require_admin(authorization: str = Header(None)):
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing token")
+
+    token = authorization.replace("Bearer ", "")
+    payload = verify_token(token)
+
+    if not payload or payload.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
 
 # =========================
 # BACKGROUND JOB FUNCTION
@@ -167,7 +174,12 @@ def create_report(payload: ReportCreate, db: Session = Depends(get_db)):
     return {"message": "Report created", "id": report.id}
 
 @router.put("/{report_id}")
-def update_report(report_id: int, payload: ReportCreate, db: Session = Depends(get_db)):
+def update_report(
+    report_id: int,
+    payload: ReportCreate,
+    db: Session = Depends(get_db),
+    _=Depends(require_admin)   # 🔥 ADD THIS
+):
 
     report = db.query(Report).filter(Report.id == report_id).first()
 
@@ -242,7 +254,11 @@ def get_reports(db: Session = Depends(get_db)):
 # DELETE REPORT
 # =========================
 @router.delete("/{report_id}")
-def delete_report(report_id: int, db: Session = Depends(get_db)):
+def delete_report(
+    report_id: int,
+    db: Session = Depends(get_db),
+    _=Depends(require_admin)
+):
     report = db.query(Report).filter(Report.id == report_id).first()
 
     if not report:
@@ -346,7 +362,12 @@ def download_file(path: str):
 # SCHEDULER
 # =========================
 @router.post("/{report_id}/schedule")
-def schedule_report(report_id: int, payload: dict, db: Session = Depends(get_db)):
+def schedule_report(
+    report_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    _=Depends(require_admin)
+):
 
     frequency = payload.get("frequency")
     email_to = payload.get("email_to")
@@ -429,7 +450,11 @@ def get_schedule(report_id: int, db: Session = Depends(get_db)):
 # DELETE SCHEDULE
 # =========================
 @router.delete("/{report_id}/schedule")
-def delete_schedule(report_id: int, db: Session = Depends(get_db)):
+def delete_schedule(
+    report_id: int,
+    db: Session = Depends(get_db),
+    _=Depends(require_admin)
+):
 
     schedule = db.query(ReportSchedule).filter(
         ReportSchedule.report_id == report_id
