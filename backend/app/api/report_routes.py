@@ -392,8 +392,34 @@ def schedule_report(
     day_of_month = payload.get("day_of_month")
 
     # ✅ fix types
-    day_of_week = int(day_of_week) if day_of_week not in [None, ""] else None
+    # 🔥 HANDLE DAY OF WEEK (string → int)
+    DAY_MAP = {
+        "mon": 1,
+        "tue": 2,
+        "wed": 3,
+        "thu": 4,
+        "fri": 5,
+        "sat": 6,
+        "sun": 7
+    }
+
+    if day_of_week not in [None, ""]:
+
+        # If already number → keep it
+        if str(day_of_week).isdigit():
+            day_of_week = int(day_of_week)
+
+        else:
+            day_of_week = DAY_MAP.get(day_of_week.lower())
+
+    else:
+        day_of_week = None
+
+    logger.info(f"[SCHEDULE] Parsed day_of_week → {day_of_week}")
+
     day_of_month = int(day_of_month) if day_of_month not in [None, ""] else None
+
+    logger.info(f"[SCHEDULE] Parsed day_of_month → {day_of_month}")
 
     # ✅ delete old schedule
     existing = db.query(ReportSchedule).filter(

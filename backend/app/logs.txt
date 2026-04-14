@@ -3206,3 +3206,12 @@
 2026-04-14 16:51:54,462 | INFO | [REPORT 14] 📭 Email skipped (manual run)
 2026-04-14 16:51:54,462 | INFO | [REPORT 14] 🎉 Manual run completed
 2026-04-14 16:51:54,462 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:56:43,702 | INFO | [REPORT 14] 📄 Copied to new report 15
+2026-04-14 16:57:06,327 | INFO | [REPORT 15] ✏️ Updated
+2026-04-14 16:59:12,608 | INFO | [REPORT 15] 📄 Copied to new report 16
+2026-04-14 16:59:34,642 | INFO | [REPORT 16] ✏️ Updated
+2026-04-14 17:04:48,723 | INFO | Loading schedule for report 14
+2026-04-14 17:04:48,726 | INFO | Loading schedule for report 16
+2026-04-14 17:05:15,716 | INFO | [REPORT 15] ✏️ Updated
+2026-04-14 17:06:33,502 | INFO | [SCHEDULE] Parsed day_of_week → 1
+2026-04-14 17:06:33,502 | INFO | [SCHEDULE] Parsed day_of_month → None
