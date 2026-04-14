@@ -81,3 +81,7 @@ def get_fields(source_type):
     data = res.json()
 
     return [{"id": f["id"], "name": f["name"]} for f in data]
+
+def build_field_map(source_type):
+    fields = get_fields(source_type)
+    return {f["id"]: f["name"] for f in fields}

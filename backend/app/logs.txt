@@ -3013,3 +3013,196 @@
 2026-04-14 15:52:03,029 | INFO | ✅ Email sent successfully on attempt 1
 2026-04-14 15:52:03,029 | INFO | [REPORT 14] 🎉 Completed successfully
 2026-04-14 15:52:03,029 | INFO | [REPORT 14] 🧹 Cleaning up job state
+2026-04-14 16:01:14,942 | INFO | [REPORT 14] ✏️ Updated
+2026-04-14 16:17:38,590 | INFO | Loading schedule for report 14
+2026-04-14 16:17:55,675 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:17:55,676 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:17:55,678 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:17:55,678 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:17:55,678 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:17:56,151 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","
+2026-04-14 16:17:56,155 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:17:56,155 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:17:56,155 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:17:56,564 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:17:56,568 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:17:56,568 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:17:56,568 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:17:56,952 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035",
+2026-04-14 16:17:56,956 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:17:56,956 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:17:56,956 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:17:57,315 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:17:57,317 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:17:57,317 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:17:57,318 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:17:57,318 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:17:57,319 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:17:57,319 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:17:57,480 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:17:57,567 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_161757.csv
+2026-04-14 16:17:57,567 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_161757.csv
+2026-04-14 16:17:57,567 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:17:57,645 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:17:57,645 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:17:57,645 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:27:19,578 | INFO | Loading schedule for report 14
+2026-04-14 16:27:34,665 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:27:34,665 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:27:34,668 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:27:34,668 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:27:34,668 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:27:35,139 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","
+2026-04-14 16:27:35,142 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:27:35,142 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:27:35,142 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:27:35,547 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:27:35,550 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:27:35,550 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:27:35,550 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:27:35,959 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035",
+2026-04-14 16:27:35,962 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:27:35,962 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:27:35,962 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:27:36,272 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:27:36,275 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:27:36,275 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:27:36,275 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:27:36,275 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:27:36,276 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:27:36,276 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:27:36,472 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:27:36,542 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_162736.csv
+2026-04-14 16:27:36,542 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_162736.csv
+2026-04-14 16:27:36,542 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:27:36,603 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:27:36,604 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:27:36,604 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:34:21,970 | INFO | [REPORT 14] ✏️ Updated
+2026-04-14 16:34:26,400 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:34:26,401 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:34:26,403 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:34:26,403 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:34:26,403 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:34:26,881 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"customfield_10091":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/customFiel
+2026-04-14 16:34:26,883 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:34:26,884 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:34:26,884 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:34:27,307 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"customfield_10091":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/customFieldO
+2026-04-14 16:34:27,311 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:34:27,311 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:34:27,311 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:34:27,724 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"customfield_10091":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/customFie
+2026-04-14 16:34:27,727 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:34:27,727 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:34:27,727 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:34:28,053 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"customfield_10091":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/customFieldO
+2026-04-14 16:34:28,055 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:34:28,055 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:34:28,055 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:34:28,055 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:34:28,056 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:34:28,056 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:34:28,225 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:34:28,290 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_163428.csv
+2026-04-14 16:34:28,290 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_163428.csv
+2026-04-14 16:34:28,290 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:34:28,315 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:34:28,315 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:34:28,315 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:38:20,188 | INFO | [REPORT 14] ✏️ Updated
+2026-04-14 16:38:24,473 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:38:24,473 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:38:24,475 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:38:24,475 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:38:24,475 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:38:24,963 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","
+2026-04-14 16:38:24,966 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:38:24,966 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:38:24,966 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:38:25,453 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:38:25,456 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:38:25,456 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:38:25,456 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:38:25,845 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035",
+2026-04-14 16:38:25,848 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:38:25,848 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:38:25,848 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:38:26,193 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:38:26,196 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:38:26,196 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:38:26,196 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:38:26,196 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:38:26,197 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:38:26,198 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:38:26,365 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:38:26,429 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_163826.csv
+2026-04-14 16:38:26,429 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_163826.csv
+2026-04-14 16:38:26,429 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:38:26,464 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:38:26,464 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:38:26,464 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:46:07,581 | INFO | Loading schedule for report 14
+2026-04-14 16:46:37,142 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:46:37,142 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:46:37,145 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:46:37,145 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:46:37,145 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:46:37,668 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","
+2026-04-14 16:46:37,671 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:46:37,671 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:46:37,671 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:46:38,104 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:46:38,107 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:46:38,107 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:46:38,107 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:46:38,537 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035",
+2026-04-14 16:46:38,541 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:46:38,541 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:46:38,541 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:46:38,865 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:46:38,868 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:46:38,868 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:46:38,868 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:46:38,868 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:46:38,869 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:46:38,869 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:46:39,023 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:46:39,093 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_164639.csv
+2026-04-14 16:46:39,093 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_164639.csv
+2026-04-14 16:46:39,093 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:46:39,277 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:46:39,278 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:46:39,278 | INFO | [REPORT 14] 🧹 Cleaning up manual run state
+2026-04-14 16:51:42,516 | INFO | Loading schedule for report 14
+2026-04-14 16:51:52,406 | INFO | [REPORT 14] 🧵 Starting background thread
+2026-04-14 16:51:52,407 | INFO | [REPORT 14] 🚀 Manual run started
+2026-04-14 16:51:52,409 | INFO | [REPORT 14] 📡 Fetching issues
+2026-04-14 16:51:52,409 | INFO | [JSM] 🔍 Starting paginated fetch
+2026-04-14 16:51:52,409 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:51:52,901 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"612801","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/612801","key":"SAFET-1662","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","
+2026-04-14 16:51:52,905 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:51:52,905 | INFO | [JSM] 📦 Fetched 100 issues
+2026-04-14 16:51:52,905 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:51:53,337 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"613750","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/613750","key":"AM-21062","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:51:53,340 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:51:53,340 | INFO | [JSM] 📦 Fetched 200 issues
+2026-04-14 16:51:53,340 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:51:53,776 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"614840","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/614840","key":"VODSA-14769","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035",
+2026-04-14 16:51:53,779 | INFO | [JSM] DEBUG → batch=100, total=None
+2026-04-14 16:51:53,779 | INFO | [JSM] 📦 Fetched 300 issues
+2026-04-14 16:51:53,779 | INFO | [JSM] JQL → created >= startofday(-1) AND created < startofday() AND issuetype = "Incident" ORDER BY created ASC
+2026-04-14 16:51:54,118 | INFO | [JSM] RAW RESPONSE → {"issues":[{"expand":"renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations","id":"616076","self":"https://onmobile-sd.atlassian.net/rest/api/3/issue/616076","key":"AM-21072","fields":{"issuetype":{"self":"https://onmobile-sd.atlassian.net/rest/api/3/issuetype/10035","id
+2026-04-14 16:51:54,120 | INFO | [JSM] DEBUG → batch=65, total=None
+2026-04-14 16:51:54,120 | INFO | [JSM] 📦 Fetched 365 issues
+2026-04-14 16:51:54,120 | INFO | [JSM] ✅ No more pages, stopping
+2026-04-14 16:51:54,120 | INFO | [JSM] 📊 Final fetched count: 365
+2026-04-14 16:51:54,121 | INFO | [REPORT 14] 📊 Total issues fetched: 365
+2026-04-14 16:51:54,122 | INFO | [REPORT 14] 📁 Generating Excel
+2026-04-14 16:51:54,295 | INFO | [EXPORT] 🔧 Generating file type: csv
+2026-04-14 16:51:54,366 | INFO | [EXPORT] ✅ CSV created: /reports/JSM_Raw_Data_Daily_Report_20260414_165154.csv
+2026-04-14 16:51:54,366 | INFO | [REPORT 14] ✅ File created: /reports/JSM_Raw_Data_Daily_Report_20260414_165154.csv
+2026-04-14 16:51:54,366 | INFO | [REPORT 14] 🧾 Saving history
+2026-04-14 16:51:54,462 | INFO | [REPORT 14] 📭 Email skipped (manual run)
+2026-04-14 16:51:54,462 | INFO | [REPORT 14] 🎉 Manual run completed
+2026-04-14 16:51:54,462 | INFO | [REPORT 14] 🧹 Cleaning up manual run state

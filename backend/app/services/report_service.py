@@ -11,35 +11,59 @@ from utils.logger import logger
 IST = pytz.timezone("Asia/Kolkata")
 
 
-# 🔥 HELPER — FORMAT DATETIME (UTC → IST)
 def format_datetime(value):
     """
-    Normalize datetime formats to IST
+    Normalize datetime formats (handles IST + timezone correctly)
     """
 
     if not value:
         return ""
 
     try:
-        # Jira datetime (UTC format)
+        # 🔥 STRING DATETIME (ISO with timezone)
         if isinstance(value, str) and "T" in value:
-            dt = datetime.strptime(value[:19], "%Y-%m-%dT%H:%M:%S")
-            dt = pytz.utc.localize(dt).astimezone(IST)
+
+            # Example: 2026-04-14T14:31:00.000+0530
+            dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f%z")
+
+            # Already in IST → just format
             return dt.strftime("%Y-%m-%d %H:%M:%S")
 
-        # Python datetime
+        # 🔥 Python datetime
         if isinstance(value, datetime):
-            if value.tzinfo is None:
-                value = pytz.utc.localize(value)
 
-            value = value.astimezone(IST)
-            return value.strftime("%Y-%m-%d %H:%M:%S")
+            if value.tzinfo is None:
+                # Assume already IST if no timezone
+                value = IST.localize(value)
+
+            return value.astimezone(IST).strftime("%Y-%m-%d %H:%M:%S")
 
     except Exception:
         pass
 
     return value
 
+def extract_adf_text(adf):
+    """
+    Extract plain text from Atlassian Document Format (ADF)
+    """
+    try:
+        texts = []
+
+        def recurse(content):
+            for item in content:
+                if item.get("type") == "text":
+                    texts.append(item.get("text", ""))
+                elif "content" in item:
+                    recurse(item["content"])
+
+        if "content" in adf:
+            recurse(adf["content"])
+
+        return " ".join(texts)
+
+    except Exception:
+        return str(adf)
 
 # 🔥 HELPER — NORMALIZE VALUE
 def normalize_value(value):
@@ -47,22 +71,42 @@ def normalize_value(value):
     Normalize Jira field values (dict, list, datetime)
     """
 
+    # 🔥 HANDLE DICT VALUES
     if isinstance(value, dict):
-        value = value.get("name") or value.get("value") or str(value)
 
+        # ✅ Assignee / User fields
+        if "displayName" in value:
+            value = value.get("displayName")
+
+        # ✅ Common fields
+        elif "name" in value:
+            value = value.get("name")
+
+        elif "value" in value:
+            value = value.get("value")
+
+        # ✅ ADF (rich text)
+        elif value.get("type") == "doc":
+            value = extract_adf_text(value)
+
+        else:
+            value = str(value)
+
+    # 🔥 HANDLE LIST
     elif isinstance(value, list):
         value = ", ".join(
-            str(v.get("name") if isinstance(v, dict) else v)
-            for v in value
+            normalize_value(v) for v in value
         )
 
     return format_datetime(value)
 
-
-def generate_excel(report_name, issues, fields, source_type, export_type="xlsx"):
+def generate_excel(report_name, issues, fields, source_type, export_type="xlsx", field_names_map=None):
     """
     Generate report file in selected format (xlsx / csv / json)
     """
+
+    if field_names_map is None:
+        field_names_map = {}
 
     timestamp = datetime.now(IST).strftime("%Y%m%d_%H%M%S")
     safe_name = report_name.replace(" ", "_")
@@ -81,14 +125,27 @@ def generate_excel(report_name, issues, fields, source_type, export_type="xlsx")
                 writer = csv.writer(f)
 
                 # Header
-                writer.writerow(fields)
+                headers = [
+                    field_names_map.get(field, field)
+                    for field in fields
+                ]
+                writer.writerow(headers)
 
                 for issue in issues:
                     row = []
                     issue_fields = issue.get("fields", {})
 
                     for field in fields:
-                        value = issue_fields.get(field, "")
+                        # 🔥 HANDLE ROOT LEVEL FIELDS (INCLUDING issuekey)
+                        if field in ["key", "issuekey"]:
+                            value = issue.get("key")
+
+                        elif field in ["id", "self"]:
+                            value = issue.get(field)
+
+                        else:
+                            value = issue_fields.get(field, "")
+
                         value = normalize_value(value)
                         row.append(str(value) if value is not None else "")
 
@@ -116,9 +173,19 @@ def generate_excel(report_name, issues, fields, source_type, export_type="xlsx")
                 row = {}
 
                 for field in fields:
-                    value = issue_fields.get(field, "")
+                    # 🔥 HANDLE ROOT LEVEL FIELDS (INCLUDING issuekey)
+                    if field in ["key", "issuekey"]:
+                        value = issue.get("key")
+
+                    elif field in ["id", "self"]:
+                        value = issue.get(field)
+
+                    else:
+                        value = issue_fields.get(field, "")
+
                     value = normalize_value(value)
-                    row[field] = value
+                    display_name = field_names_map.get(field, field)
+                    row[display_name] = value
 
                 data.append(row)
 
@@ -145,14 +212,28 @@ def generate_excel(report_name, issues, fields, source_type, export_type="xlsx")
             ws.title = "Report"
 
             # Header
-            ws.append(fields)
+            headers = [
+                field_names_map.get(field, field)
+                for field in fields
+            ]
+
+            ws.append(headers)
 
             for issue in issues:
                 row = []
                 issue_fields = issue.get("fields", {})
 
                 for field in fields:
-                    value = issue_fields.get(field, "")
+                    # 🔥 HANDLE ROOT LEVEL FIELDS (INCLUDING issuekey)
+                    if field in ["key", "issuekey"]:
+                        value = issue.get("key")
+
+                    elif field in ["id", "self"]:
+                        value = issue.get(field)
+
+                    else:
+                        value = issue_fields.get(field, "")
+
                     value = normalize_value(value)
                     row.append(value if value is not None else "")
 

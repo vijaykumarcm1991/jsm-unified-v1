@@ -19,6 +19,7 @@ from fastapi.responses import FileResponse
 import os
 from fastapi import Header
 from utils.auth import verify_token
+from services.metadata_service import build_field_map
 
 running_jobs = {}
 cancel_flags = {}
@@ -78,7 +79,7 @@ def run_report_job(report_id: int, cancel_event: Event):
                 "progress": percent
             })
         
-        issues = fetch_issues(
+        issues, field_names_map = fetch_issues(
             source_type=report.source_type,
             jql=report.jql,
             fields=fields,
@@ -94,14 +95,20 @@ def run_report_job(report_id: int, cancel_event: Event):
 
         logger.info(f"[REPORT {report_id}] 📁 Generating Excel")
 
+        # ✅ BUILD METADATA MAP
+        meta_map = build_field_map(report.source_type)
+
+        # ✅ MERGE (API overrides metadata)
+        final_map = {**meta_map, **field_names_map}
+
         file_path = generate_excel(
             report_name=report.name,
             issues=issues,
             fields=fields,
-            source_type=report.source_type,   # ✅ ADD THIS
-            export_type=report.export_type   # 🔥 NEW
+            source_type=report.source_type,
+            export_type=report.export_type,
+            field_names_map=final_map   # ✅ ADD THIS
         )
-
         if cancel_event.is_set():
             logger.info(f"[REPORT {report_id}] 🛑 Cancel before saving history")
             return

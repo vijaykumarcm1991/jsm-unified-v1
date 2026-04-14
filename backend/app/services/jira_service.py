@@ -111,6 +111,9 @@ def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None, pr
         issues = data.get("issues", [])
         total = data.get("total")
 
+        # ✅ ADD THIS
+        field_names_map = data.get("names", {})
+
         logger.info(f"[{source_type.upper()}] DEBUG → batch={len(issues)}, total={total}")
 
         all_issues.extend(issues)
@@ -139,4 +142,4 @@ def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None, pr
 
     logger.info(f"[{source_type.upper()}] 📊 Final fetched count: {len(all_issues)}")
 
-    return all_issues
+    return all_issues, field_names_map
