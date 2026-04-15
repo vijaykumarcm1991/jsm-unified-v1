@@ -168,6 +168,14 @@ def run_report_job(report_id: int, cancel_event: Event):
     except Exception as e:
         logger.error(f"[REPORT {report_id}] ❌ Error: {str(e)}")
 
+        # 🔥 SET FAILED STATUS
+        job_status[report_id] = {
+            "status": "FAILED",
+            "progress": 100,
+            "fetched": job_status.get(report_id, {}).get("fetched", 0),
+            "total": job_status.get(report_id, {}).get("total", 0)
+        }
+
     finally:
         logger.info(f"[REPORT {report_id}] 🧹 Cleaning up manual run state")
         running_jobs.pop(report_id, None)
@@ -332,6 +340,28 @@ def run_report(report_id: int):
 
     return {"message": "Report started in background"}
 
+# =========================
+# RERUN REPORT (ADMIN ONLY)
+# =========================
+@router.post("/{report_id}/rerun")
+def rerun_report(
+    report_id: int,
+    _=Depends(require_admin)   # 🔥 ADMIN ONLY
+):
+
+    if report_id in running_jobs:
+        logger.warning(f"[REPORT {report_id}] ⚠️ Already running (rerun blocked)")
+        raise HTTPException(status_code=400, detail="Report already running")
+
+    cancel_event = Event()
+    cancel_flags[report_id] = cancel_event
+    running_jobs[report_id] = True
+
+    logger.info(f"[REPORT {report_id}] 🔁 Admin triggered rerun")
+
+    Thread(target=run_report_job, args=(report_id, cancel_event)).start()
+
+    return {"message": "Report rerun started"}
 
 # =========================
 # CANCEL REPORT (FIXED)

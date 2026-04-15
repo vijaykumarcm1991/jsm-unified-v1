@@ -180,6 +180,15 @@ async function loadReports() {
                             Run
                         </button>
 
+                        ${isAdmin() && (
+                            window.reportStatusMap?.[r.id] === "FAILED"
+                        ) ? `
+                        <button onclick="rerunReport(${r.id})"
+                            class="flex items-center gap-1 bg-yellow-500 text-white px-3 py-1 rounded text-xs">
+                            🔁 Re-run
+                        </button>
+                        ` : ""}
+
                         <button onclick="cancelReport(${r.id})"
                             class="flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded hover:opacity-80 hover:scale-105 transition text-xs">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -289,6 +298,33 @@ async function runReport(id) {
     }, 2000);
 }
 
+async function rerunReport(id) {
+
+    if (!confirm("Do you want to rerun this report?")) return;
+
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`/reports/${id}/rerun`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    if (!res.ok) {
+        if (res.status === 403) {
+            showToast("❌ Admin access required", "error");
+        } else {
+            showToast("❌ Failed to trigger rerun", "error");
+        }
+        return;
+    }
+
+    const data = await res.json();
+
+    showToast(data.message || "Rerun started", "success");
+}
+
 async function cancelReport(id) {
     const res = await fetch(`/reports/${id}/cancel`, {
         method: "POST"
@@ -323,11 +359,20 @@ async function fetchStatus(id) {
             bar.className = "h-3 rounded bg-red-500 transition-all duration-500";
             text.innerHTML = "Cancelled";
 
+        } else if (data.status === "FAILED") {
+            bar.style.width = "100%";
+            bar.className = "h-3 rounded bg-red-600 transition-all duration-500";
+            text.innerHTML = "Failed ❌";
+
         } else {
             bar.style.width = "0%";
             bar.className = "h-3 rounded bg-gray-400";
             text.innerHTML = "Idle";
         }
+
+        // 🔥 ADD HERE (VERY IMPORTANT)
+        window.reportStatusMap = window.reportStatusMap || {};
+        window.reportStatusMap[id] = data.status;
 
     } catch (e) {
         console.error("Status fetch error", e);
