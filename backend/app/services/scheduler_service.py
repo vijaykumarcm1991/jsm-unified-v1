@@ -16,6 +16,10 @@ scheduler = BackgroundScheduler(timezone=IST)
 
 running_jobs = {}
 
+# 🔥 RETRY CONFIG
+MAX_RETRIES = 3
+RETRY_DELAY = 5   # seconds
+
 def run_scheduled_report(report_id: int):
     db = SessionLocal()
 
@@ -26,95 +30,149 @@ def run_scheduled_report(report_id: int):
 
     running_jobs[report_id] = True
 
-    try:
-        logger.info(f"[REPORT {report_id}] 🚀 Starting execution")
+    last_error = None
 
-        report = db.query(Report).filter(Report.id == report_id).first()
+    for attempt in range(1, MAX_RETRIES + 1):
 
-        if not report:
-            logger.error(f"[REPORT {report_id}] ❌ Report not found")
-            return
+        try:
+            logger.info(f"[REPORT {report_id}] 🚀 Attempt {attempt} started")
 
-        fields = ast.literal_eval(report.fields)
+            report = db.query(Report).filter(Report.id == report_id).first()
 
-        logger.info(f"[REPORT {report_id}] 📡 Fetching issues")
+            if not report:
+                logger.error(f"[REPORT {report_id}] ❌ Report not found")
+                return
 
-        issues = fetch_issues(
-            source_type=report.source_type,
-            jql=report.jql,
-            fields=fields
-        )
+            fields = ast.literal_eval(report.fields)
 
-        logger.info(f"[REPORT {report_id}] 📊 Total issues fetched: {len(issues)}")
+            logger.info(f"[REPORT {report_id}] 📡 Fetching issues")
 
-        logger.info(f"[REPORT {report_id}] 📁 Generating Excel")
-
-        file_path = generate_excel(
-            report_name=report.name,
-            issues=issues,
-            fields=fields,
-            source_type=report.source_type,
-            export_type=report.export_type   # 🔥 NEW
-        )
-
-        logger.info(f"[REPORT {report_id}] ✅ File created: {file_path}")
-
-        history = ReportHistory(
-            report_id=report.id,
-            file_path=file_path,
-            status="SUCCESS",
-            generated_at=datetime.now(IST)
-        )
-
-        db.add(history)
-        db.commit()
-
-        logger.info(f"[REPORT {report_id}] 🧾 History saved")
-
-        # Email
-        schedule = db.query(ReportSchedule).filter(
-            ReportSchedule.report_id == report.id
-        ).first()
-
-        if schedule and schedule.email_to:
-            logger.info(f"[REPORT {report_id}] 📧 Sending email to {schedule.email_to}")
-
-            cc_list = [e.strip() for e in schedule.cc_email.split(",")] if schedule.cc_email else []
-
-            # 🔥 DEFAULTS
-            default_subject = f"Report: {report.name}"
-            default_body = f"""
-            Hello,
-
-            Please find attached report: {report.name}
-
-            Generated at: {datetime.now(IST)}
-
-            Regards,
-            Jira Reporting System
-            """
-
-            # 🔥 APPLY CUSTOM (SAFE)
-            subject = schedule.email_subject if schedule.email_subject else default_subject
-            body = schedule.email_body if schedule.email_body else default_body
-
-            send_email(
-                to_emails=[e.strip() for e in schedule.email_to.split(",")],
-                subject=subject,
-                body=body,
-                file_path=file_path,
-                cc_emails=cc_list
+            # 🔥 HANDLE BOTH RETURN TYPES (IMPORTANT)
+            result = fetch_issues(
+                source_type=report.source_type,
+                jql=report.jql,
+                fields=fields
             )
 
-        logger.info(f"[REPORT {report_id}] 🎉 Completed successfully")
+            if isinstance(result, tuple):
+                issues, field_names_map = result
+            else:
+                issues = result
+                field_names_map = {}
 
-    except Exception as e:
-        logger.error(f"[REPORT {report_id}] ❌ Failed: {str(e)}")
+            logger.info(f"[REPORT {report_id}] 📊 Total issues fetched: {len(issues)}")
 
-    finally:
-        logger.info(f"[REPORT {report_id}] 🧹 Cleaning up job state")
-        running_jobs.pop(report_id, None)
-        db.close()
+            logger.info(f"[REPORT {report_id}] 📁 Generating Excel")
+
+            file_path = generate_excel(
+                report_name=report.name,
+                issues=issues,
+                fields=fields,
+                source_type=report.source_type,
+                export_type=report.export_type
+            )
+
+            logger.info(f"[REPORT {report_id}] ✅ File created: {file_path}")
+
+            history = ReportHistory(
+                report_id=report.id,
+                file_path=file_path,
+                status="SUCCESS",
+                generated_at=datetime.now(IST)
+            )
+
+            db.add(history)
+            db.commit()
+
+            logger.info(f"[REPORT {report_id}] 🧾 History saved")
+
+            # 🔥 EMAIL SUCCESS FLOW (existing logic)
+            schedule = db.query(ReportSchedule).filter(
+                ReportSchedule.report_id == report.id
+            ).first()
+
+            if schedule and schedule.email_to:
+                cc_list = [e.strip() for e in schedule.cc_email.split(",")] if schedule.cc_email else []
+
+                subject = schedule.email_subject or f"Report: {report.name}"
+                body = schedule.email_body or f"""
+    Hello,
+
+    Please find attached report: {report.name}
+
+    Generated at: {datetime.now(IST)}
+
+    Regards,
+    Jira Reporting System
+    """
+
+                send_email(
+                    to_emails=[e.strip() for e in schedule.email_to.split(",")],
+                    subject=subject,
+                    body=body,
+                    file_path=file_path,
+                    cc_emails=cc_list
+                )
+
+            logger.info(f"[REPORT {report_id}] 🎉 Completed successfully")
+            return  # ✅ EXIT LOOP ON SUCCESS
+
+        except Exception as e:
+            last_error = str(e)
+            logger.error(f"[REPORT {report_id}] ❌ Attempt {attempt} failed: {last_error}")
+
+            if attempt < MAX_RETRIES:
+                logger.info(f"[REPORT {report_id}] 🔁 Retrying in {RETRY_DELAY}s...")
+                import time
+                time.sleep(RETRY_DELAY)
+            else:
+                logger.error(f"[REPORT {report_id}] 🚨 All retries failed")
+
+        # 🔥 FAILURE EMAIL ALERT
+        try:
+            schedule = db.query(ReportSchedule).filter(
+                ReportSchedule.report_id == report_id
+            ).first()
+
+            if schedule and schedule.email_to:
+
+                subject = f"🚨 Report Failed: {report.name} (ID: {report_id})"
+
+                body = f"""
+        Hello Vijay,
+
+        Scheduled report FAILED after {MAX_RETRIES} attempts.
+
+        Report Name: {report.name}
+        Report ID: {report_id}
+        Time: {datetime.now(IST)}
+
+        Error:
+        {last_error}
+
+        Please check application logs.
+
+        Regards,
+        Jira Reporting System
+        """
+
+                send_email(
+                    to_emails=["vijay.kumarcm@onmobile.com"],
+                    subject=subject,
+                    body=body,
+                    file_path=None,   # no attachment
+                    cc_emails=[]
+                )
+
+                logger.info(f"[REPORT {report_id}] 📧 Failure email sent")
+
+        except Exception as email_error:
+            logger.error(f"[REPORT {report_id}] ❌ Failed to send failure email: {str(email_error)}")
+
+        finally:
+            logger.info(f"[REPORT {report_id}] 🧹 Cleaning up job state")
+            running_jobs.pop(report_id, None)
+            db.close()
 
 def load_schedules():
     db = SessionLocal()

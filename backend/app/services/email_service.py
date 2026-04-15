@@ -23,22 +23,23 @@ def send_email(
 
     msg.set_content(body)
 
-    # 📎 Attach file
-    try:
-        with open(file_path, "rb") as f:
-            file_data = f.read()
-            file_name = os.path.basename(file_path)
+    # 📎 Attach file (optional)
+    if file_path:
+        try:
+            with open(file_path, "rb") as f:
+                file_data = f.read()
+                file_name = os.path.basename(file_path)
 
-        msg.add_attachment(
-            file_data,
-            maintype="application",
-            subtype="octet-stream",
-            filename=file_name
-        )
+            msg.add_attachment(
+                file_data,
+                maintype="application",
+                subtype="octet-stream",
+                filename=file_name
+            )
 
-    except Exception as e:
-        logger.error(f"❌ Attachment failed: {str(e)}")
-        raise
+        except Exception as e:
+            logger.error(f"❌ Attachment failed: {str(e)}")
+            raise
 
     # 📧 SMTP config
     smtp_server = os.getenv("SMTP_SERVER")
