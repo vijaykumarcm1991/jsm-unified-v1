@@ -91,7 +91,7 @@ def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None, pr
                     timeout=30
                 )
 
-            logger.info(f"[{source_type.upper()}] RAW RESPONSE → {response.text[:300]}")
+            logger.debug(f"[{source_type.upper()}] RAW RESPONSE → {response.text[:300]}")
 
         except Exception as e:
             logger.error(f"[{source_type.upper()}] ❌ Request failed: {str(e)}")
@@ -114,7 +114,7 @@ def fetch_issues(source_type: str, jql: str, fields: list, cancel_event=None, pr
         # ✅ ADD THIS
         field_names_map = data.get("names", {})
 
-        logger.info(f"[{source_type.upper()}] DEBUG → batch={len(issues)}, total={total}")
+        logger.debug(f"[{source_type.upper()}] DEBUG → batch={len(issues)}, total={total}")
 
         all_issues.extend(issues)
 

@@ -2,3 +2,6 @@
 build_start.sh
 git_commit_push.sh
 reports/
+backend/app/logs.txt
+logs.txt
+.kkey/

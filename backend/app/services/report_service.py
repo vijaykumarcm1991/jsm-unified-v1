@@ -21,22 +21,22 @@ def format_datetime(value):
 
     try:
         # 🔥 STRING DATETIME (ISO with timezone)
-        if isinstance(value, str) and "T" in value:
+        if isinstance(value, str) and len(value) > 10 and value[10] == 'T':
 
-            # Example: 2026-04-14T14:31:00.000+0530
-            dt = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f%z")
-
-            # Already in IST → just format
-            return dt.strftime("%Y-%m-%d %H:%M:%S")
+            # Try to parse ISO format and strip timezone
+            try:
+                # Handle 'Z' suffix or standard offset
+                dt = datetime.fromisoformat(value.replace('Z', '+00:00'))
+                return dt.replace(tzinfo=None).strftime("%Y-%m-%d %H:%M:%S")
+            except Exception:
+                # If parsing fails, return original string
+                return value
 
         # 🔥 Python datetime
         if isinstance(value, datetime):
-
-            if value.tzinfo is None:
-                # Assume already IST if no timezone
-                value = IST.localize(value)
-
-            return value.astimezone(IST).strftime("%Y-%m-%d %H:%M:%S")
+            # Strip timezone info
+            value = value.replace(tzinfo=None)
+            return value.strftime("%Y-%m-%d %H:%M:%S")
 
     except Exception:
         pass

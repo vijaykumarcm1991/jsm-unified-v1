@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 
 def setup_logger():
     logger = logging.getLogger("app")
@@ -8,7 +9,9 @@ def setup_logger():
     if logger.hasHandlers():
         return logger
 
-    logger.setLevel(logging.INFO)
+    # ✅ Read log level from environment variable
+    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+    logger.setLevel(getattr(logging, log_level, logging.INFO))
 
     file_handler = logging.FileHandler("logs.txt")
     stream_handler = logging.StreamHandler(sys.stdout)

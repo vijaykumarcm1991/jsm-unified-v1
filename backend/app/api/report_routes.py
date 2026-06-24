@@ -110,8 +110,8 @@ def run_report_job(report_id: int, cancel_event: Event):
             issues = []
 
         # 🔥 DEBUG (ADD HERE — FINAL STATE)
-        logger.info(f"[REPORT {report_id}] DEBUG → issues_type={type(issues)}, map_type={type(field_names_map)}")
-        logger.info(f"[REPORT {report_id}] DEBUG → first_issue_type={type(issues[0]) if issues else None}")
+        logger.debug(f"[REPORT {report_id}] DEBUG → issues_type={type(issues)}, map_type={type(field_names_map)}")
+        logger.debug(f"[REPORT {report_id}] DEBUG → first_issue_type={type(issues[0]) if issues else None}")
 
         if cancel_event.is_set():
             logger.info(f"[REPORT {report_id}] 🛑 Cancel detected after fetch")
